@@ -1,0 +1,52 @@
+html, body, #main {
+  height: 100%;
+  overflow: hidden;
+}
+.page {
+  height: 100%;
+}
+.box {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 400px;
+  height: 400px;
+  background-color: #3498DB;
+}
+.circle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 100px;
+  height: 100px;
+  background-color: #ffa500;
+  border-radius: 100%;
+}
+
+.toggle-btn-left {
+  position: absolute;
+  top: 20px;
+  right: 200px;
+  left: 0;
+  margin: auto;
+  width: 80px;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.toggle-btn-right {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  left: 200px;
+  margin: auto;
+  width: 80px;
+  padding: 10px;
+  font-size: 18px;
+}
