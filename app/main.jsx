@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import Main from './components'
+import Table from './components'
 
 render(
-  <Main />,
+  <Table />,
   document.getElementById('main')
 )

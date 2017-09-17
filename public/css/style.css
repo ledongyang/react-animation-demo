@@ -2,10 +2,50 @@ html, body, #main {
   height: 100%;
   overflow: hidden;
 }
-.page {
+.table {
   height: 100%;
+  background-color: white;
 }
-.box {
+.deck {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  margin: auto;
+  width: 100px;
+  height: 144px;
+  background-color: red;
+  border-radius: 10%;
+  /* border: 1px solid black; */
+}
+.card {
+  position: absolute;
+  /* top: 600px; */
+  /* bottom: 0; */
+  /* left: 150px; */
+  /* right: 0; */
+  margin: auto;
+  width: 100px;
+  height: 144px;
+  background-color: red;
+  border-radius: 10%;
+  border: 1px solid black;
+}
+
+.back {
+  position: absolute;
+  /* top: 600px; */
+  /* bottom: 0; */
+  /* left: 150px; */
+  /* right: 0; */
+  margin: auto;
+  width: 100px;
+  height: 144px;
+  background-color: blue;
+  border-radius: 10%;
+  border: 1px solid black;
+}
+
+/* .box {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -13,7 +53,7 @@ html, body, #main {
   right: 0;
   margin: auto;
   width: 400px;
-  height: 400px;
+  height: 575px;
   background-color: #3498DB;
 }
 .circle {
@@ -27,7 +67,7 @@ html, body, #main {
   height: 100px;
   background-color: #ffa500;
   border-radius: 100%;
-}
+} */
 
 .toggle-btn-left {
   position: absolute;

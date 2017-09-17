@@ -1,63 +1,89 @@
 import React, { Component } from 'react';
 import { TransitionGroup } from 'react-transition-group';
-import Box from './box';
-import Circle from './circle';
+// import Box from './box';
+// import Circle from './circle';
+// import Card from './Card';
+import Deck from './Deck';
+import CardBack from './CardBack';
+import Hand from './Hand';
 
-export default class Main extends Component {
+export default class Table extends Component {
 
   constructor() {
     super();
     this.state = {
-      // showBox: true,
-      // showCircle: false
-      // flag: true,
-      dogs: ['http://img2.zergnet.com/731737_300.jpg',
-      'https://i.pinimg.com/736x/68/de/1c/68de1c30a5e0e373fd6ee7fd143714b8.jpg',
-      'https://www.what-dog.net/Images/faces2/scroll001.jpg',
-      'https://www.what-dog.net/Images/faces2/scroll0015.jpg',
-      'http://www.nationalgeographic.com/content/dam/animals/thumbs/rights-exempt/mammals/d/domestic-dog_thumb.jpg',
-      'https://yt3.ggpht.com/EdjnobpzppDl5pSVU2s2AUIiFS0qBfT8Jdodw-FHMhugJK5zmzWDLkpqDVtpnaLSP66M5F8nqINImLKGtQ=s900-nd-c-c0xffffffff-rj-k-no',
-      'http://urbanmilwaukee.com/wp-content/uploads/2017/06/Too-cute-doggone-it-video-playlist-1.jpg'],
-      index: 0,
-      direction: 'right'
+      handCards: [{
+        id: 1,
+        name: 'A',
+        type: 'Spade',
+        value: 14
+      }, {
+        id: 2,
+        name: '2',
+        type: 'Diamond',
+        value: 15
+      }, {
+        id: 3,
+        name: 'K',
+        type: 'Heart',
+        value: 13
+      }, {
+        id: 4,
+        name: 'J',
+        type: 'Club',
+        value: 11
+      }, {
+        id: 5,
+        name: '7',
+        type: 'Spade',
+        value: 14
+      }, {
+        id: 6,
+        name: '4',
+        type: 'Diamond',
+        value: 15
+      }, {
+        id: 7,
+        name: '5',
+        type: 'Heart',
+        value: 13
+      }, {
+        id: 8,
+        name: '10',
+        type: 'Club',
+        value: 11
+      }],
+      revealHand: false
     }
-    this.toggleBoxLeft = this.toggleBoxLeft.bind(this);
-    this.toggleBoxRight = this.toggleBoxRight.bind(this);
-  }
-
-  toggleBoxLeft() {
-    this.setState({
-      index: this.state.index === 0 ? this.state.dogs.length - 1 : this.state.index - 1,
-      direction: 'left'
-    })
-  }
-
-  toggleBoxRight() {
-    this.setState({
-      // showBox: !this.state.showBox,
-      // showCircle: !this.state.showCircle
-      index: this.state.index === this.state.dogs.length - 1 ? 0 : this.state.index + 1,
-      direction: 'right'
-      // flag: !this.state.flag
-    })
   }
 
   render() {
     // console.log('showbox: ', this.state.showBox);
     // console.log('showCircle: ', this.state.showCircle);
     // console.log(this.state.flag)
+
     return (
-      <div className="page">
-        <button className="toggle-btn-left" onClick={this.toggleBoxLeft}>{'<<<'}</button>
-        <button className="toggle-btn-right" onClick={this.toggleBoxRight}>{'>>>'}</button>
+      <div className="table">
+        <Deck />
+        {/* <button className="toggle-btn-left" onClick={this.toggleBoxLeft}>{'<<<'}</button>
+        <button className="toggle-btn-right" onClick={this.toggleBoxRight}>{'>>>'}</button> */}
         <TransitionGroup>
-          <Box key={`${this.state.index}`} direction={this.state.direction} dog={this.state.dogs[this.state.index]} />
+          {/* <Box key={`${this.state.index}`} direction={this.state.direction} dog={this.state.dogs[this.state.index]} /> */}
         {/* {
           this.state.showBox && <Box />
         } */}
         {/* {
           this.state.showCircle && <Circle />
         } */}
+
+          {/* {
+            this.state.handCards.map(card =>
+              <Card key={card.id} card={card} />
+            )
+          } */}
+          <Hand state={this.state} />
+          {/* <Box /> */}
+
         </TransitionGroup>
       </div>
     )
