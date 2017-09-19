@@ -1,90 +1,80 @@
 import React, { Component } from 'react';
 import { TransitionGroup } from 'react-transition-group';
-// import Box from './box';
-// import Circle from './circle';
-// import Card from './Card';
 import Deck from './Deck';
-import CardBack from './CardBack';
-import Hand from './Hand';
+import {MyHand, OpponentHand} from './dealHand';
 
 export default class Table extends Component {
 
   constructor() {
     super();
     this.state = {
-      handCards: [{
+      initial: true,
+      myHandId: 1,
+      opponentHandId: 2,
+      cardBack: './images/cardback.jpg',
+      myHandCards: [{
         id: 1,
-        name: 'A',
-        type: 'Spade',
-        value: 14
+        cardFront: './images/heart3.png'
       }, {
         id: 2,
-        name: '2',
-        type: 'Diamond',
-        value: 15
+        cardFront: './images/hearta.png'
       }, {
         id: 3,
-        name: 'K',
-        type: 'Heart',
-        value: 13
+        cardFront: './images/heart2.png'
       }, {
         id: 4,
-        name: 'J',
-        type: 'Club',
-        value: 11
+        cardFront: './images/diamond10.png'
       }, {
         id: 5,
-        name: '7',
-        type: 'Spade',
-        value: 14
-      }, {
+        cardFront: './images/black7.png'
+      }],
+      opponentHandCards: [{
         id: 6,
-        name: '4',
-        type: 'Diamond',
-        value: 15
+        cardFront: './images/heart3.png'
       }, {
         id: 7,
-        name: '5',
-        type: 'Heart',
-        value: 13
+        cardFront: './images/heart3.png'
       }, {
         id: 8,
-        name: '10',
-        type: 'Club',
-        value: 11
-      }],
-      revealHand: false
+        cardFront: './images/heart3.png'
+      }, {
+        id: 9,
+        cardFront: './images/heart3.png'
+      }, {
+        id: 10,
+        cardFront: './images/heart3.png'
+      }]
     }
+    this.deal = this.deal.bind(this);
+    this.draw = this.draw.bind(this);
+  }
+
+  deal() {
+    this.setState({
+      initial: false,
+      myHandId: this.state.myHandId + 2,
+      opponentHandId: this.state.opponentHandId + 2
+    })
+  }
+
+  draw() {
+    this.setState({
+      myHandCards: [...this.state.myHandCards, {
+        id: this.state.myHandCards.length + 1,
+        cardFront: './images/black7.png'
+      }]
+    })
   }
 
   render() {
-    // console.log('showbox: ', this.state.showBox);
-    // console.log('showCircle: ', this.state.showCircle);
-    // console.log(this.state.flag)
-
     return (
       <div className="table">
-        <Deck />
-        {/* <button className="toggle-btn-left" onClick={this.toggleBoxLeft}>{'<<<'}</button>
-        <button className="toggle-btn-right" onClick={this.toggleBoxRight}>{'>>>'}</button> */}
+        <Deck onClick={this.draw} />
         <TransitionGroup>
-          {/* <Box key={`${this.state.index}`} direction={this.state.direction} dog={this.state.dogs[this.state.index]} /> */}
-        {/* {
-          this.state.showBox && <Box />
-        } */}
-        {/* {
-          this.state.showCircle && <Circle />
-        } */}
-
-          {/* {
-            this.state.handCards.map(card =>
-              <Card key={card.id} card={card} />
-            )
-          } */}
-          <Hand state={this.state} />
-          {/* <Box /> */}
-
+          <MyHand key={this.state.myHandId} { ...this.state } isPlayer={true} />
+          <OpponentHand key={this.state.opponentHandId} { ...this.state } isPlayer={false} />
         </TransitionGroup>
+        <button onClick={this.deal} className="deal-btn btn-primary">Deal</button>
       </div>
     )
   }

@@ -1,75 +1,46 @@
 import React from 'react';
 import Animation from './animation';
 import { findDOMNode } from 'react-dom';
-import { TweenMax, TimelineLite } from 'gsap';
+import myHand from './MyHand';
+import opponentHand from './OpponentHand';
 
-export default (Component) => {
-
-  return class dealHand extends React.Component {
-
-    constructor(props) {
-      super(props);
-      // this.state = props.state;
-      console.log(props.state);
-      this.state = props.state;
-    }
+const dealHand = (Component) => {
+  return class DealHand extends React.Component {
 
     componentWillEnter(cb) {
       console.log('enter')
+      const {isPlayer} = this.props;
+      let cards = findDOMNode(this).getElementsByClassName('card');
+      cards = [].slice.call(cards, 0)
+      const frontCards = cards.map(card =>
+        card.getElementsByClassName('cardFront')[0]
+      )
+      const backCards = cards.map(card =>
+        card.getElementsByClassName('cardBack')[0]
+      )
+      Animation.dealHand(cards, frontCards, backCards, {isPlayer}, cb)
     }
 
-    componentWillAppear(cb) {
-      console.log('hand appear')
-      console.log(findDOMNode(this))
-      const targetArr = findDOMNode(this).getElementsByClassName('back')
-      // console.log(targetArr);
-      // console.log(this)
-      // option.direction = this.props.direction;
-      // console.log(this.props.isFront)
-      // let state = this.props;
-      // Animation.deal(targetArr, cb);
-      // this.setState({isFront: !this.state.isFront})
-      const duration = 1;
-      const stagger = 0.2;
-      const position = 0;
-      const tl = new TimelineLite();
-      tl.staggerFromTo(targetArr, duration, {
-        cycle: {
-          y: function() {
-            return 10
-          },
-          x: function() {
-            return 10
-          }
-        }
-      }, {
-        cycle: {
-          y: function() {
-            return 600
-          },
-          x: function(index) {
-            return 100 + (index + 1) * 50
-          }
-        }
-      }, stagger, position, () => {
-        console.log('animation completed!')
-        // console.log(state)
-        // state.setState(state.isFront = !state.isFront)
-        // console.log(cb)
-        cb()
-        console.log(this)
-        this.setState({revealHand: !this.state.revealHand})
-      })
+    componentWillLeave(cb) {
+      console.log('leave')
+      const {isPlayer, initial} = this.props;
+      console.log(this.props)
+      const cards = findDOMNode(this).getElementsByClassName('card');
+      if (!initial) {
+        Animation.emptyHand(cards, {isPlayer}, cb);
+      } else {
+        cb();
+      }
     }
-
-    // componentWillLeave() {
-    //   console.log('hand leave')
-    // }
 
     render() {
+      console.log(this.props)
       return (
-        <Component state={this.state} />
+        <Component { ...this.props } />
       )
     }
   }
 }
+
+export const MyHand = dealHand(myHand);
+export const OpponentHand = dealHand(opponentHand);

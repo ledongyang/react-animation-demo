@@ -13,78 +13,52 @@ html, body, #main {
   margin: auto;
   width: 100px;
   height: 144px;
-  background-color: red;
+  background: url('../images/cardback.jpg');
+  background-size: cover;
   border-radius: 10%;
-  /* border: 1px solid black; */
+  border: 1px solid black;
 }
 .card {
   position: absolute;
-  /* top: 600px; */
-  /* bottom: 0; */
-  /* left: 150px; */
-  /* right: 0; */
+  top: 10px;
+  left: 10px;
   margin: auto;
   width: 100px;
   height: 144px;
-  background-color: red;
+}
+
+.cardFront, .cardBack
+{
+  position:absolute;
+  width:100px;
+  height:144px;
   border-radius: 10%;
   border: 1px solid black;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
 }
-
-.back {
-  position: absolute;
-  /* top: 600px; */
-  /* bottom: 0; */
-  /* left: 150px; */
-  /* right: 0; */
-  margin: auto;
-  width: 100px;
-  height: 144px;
-  background-color: blue;
-  border-radius: 10%;
+.cardBack
+{
   border: 1px solid black;
+  background:url('./images/cardback.jpg');
 }
 
-/* .box {
+.deal-btn {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: 400px;
-  height: 575px;
-  background-color: #3498DB;
-}
-.circle {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: 100px;
-  height: 100px;
-  background-color: #ffa500;
-  border-radius: 100%;
-} */
-
-.toggle-btn-left {
-  position: absolute;
-  top: 20px;
-  right: 200px;
-  left: 0;
+  bottom: 100px;
+  right: 100px;
   margin: auto;
   width: 80px;
   padding: 10px;
   font-size: 18px;
 }
 
-.toggle-btn-right {
+.draw-btn {
   position: absolute;
-  top: 20px;
-  right: 0;
-  left: 200px;
+  bottom: 50px;
+  right: 100px;
   margin: auto;
   width: 80px;
   padding: 10px;

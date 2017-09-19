@@ -1,60 +1,44 @@
 import { TweenMax, TimelineLite } from 'gsap';
 
 export default {
-
-  deal: (targetArr, cb) => {
+  dealHand: (cards, frontCards, backCards, option, cb) => {
+    TweenMax.set(frontCards, {rotationY: -180})
     const duration = 1;
-    const stagger = 0.3;
+    const stagger = 0.2;
     const position = 0;
+    let {isPlayer} = option;
+    let ypos = isPlayer ? 600 : -50;
+    let xpos = isPlayer ? 100 : 600;
+
     const tl = new TimelineLite();
-    tl.staggerTo(targetArr, duration, {
+    tl.staggerTo(cards, duration, {
       cycle: {
         y: function() {
-          return 600
+          return ypos
         },
         x: function(index) {
-          return 100 + (index + 1) * 50
+          return xpos + (index + 1) * 50
         }
       }
-    }, stagger, position, () => {
-      console.log('animation completed!')
-      // console.log(state)
-      // state.setState(state.isFront = !state.isFront)
-      // console.log(cb)
-      cb()
-    })
+    }, stagger, position, cb)
+    option.isPlayer &&
+    tl
+    .staggerTo(backCards, 1, {
+      rotationY: -180
+    }, stagger, position)
+    .staggerTo(frontCards, 1, {
+      rotationY: 0
+    }, stagger, position, cb)
   },
-
-  show: (target, cb, option) => {
-    const duration = option.duration;
-    TweenMax.fromTo(target, duration, {
-      x: option.direction === 'right' ? -400 : 400,
-      opacity: 0,
-      scale: 0
-    }, {
-      x: 0,
-      opacity: 1,
-      scale: 1,
-      onComplete() {
-        console.log('show animation complete!');
-        cb();
-      }
-    })
-  },
-  hide: (target, cb, option) => {
-    const duration = option.duration;
-    TweenMax.fromTo(target, duration, {
-      x: 0,
-      opacity: 1,
-      scale: 1
-    }, {
-      x: option.direction === 'right' ? 400 : -400,
-      opacity: 0,
-      scale: 0,
-      onComplete() {
-        console.log('hide animation complete!');
-        cb();
-      }
-    })
+  emptyHand: (cards, option, cb) => {
+    const {isPlayer} = option;
+    let ypos = isPlayer ? 800 : -200;
+    const duration = 0.5;
+    const stagger = 0.2;
+    const position = 0;
+    const tl = new TimelineLite();
+    tl.staggerTo(cards, duration, {
+      y: ypos
+    }, stagger, position, cb)
   }
 }
