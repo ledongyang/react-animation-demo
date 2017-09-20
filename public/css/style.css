@@ -13,7 +13,7 @@ html, body, #main {
   margin: auto;
   width: 100px;
   height: 144px;
-  background: url('../images/cardback.jpg');
+  background: url('../images/cardBack/cardback.jpg');
   background-size: cover;
   border-radius: 10%;
   border: 1px solid black;

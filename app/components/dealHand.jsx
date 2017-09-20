@@ -1,5 +1,5 @@
 import React from 'react';
-import Animation from './animation';
+import Animation from './Animation/animation';
 import { findDOMNode } from 'react-dom';
 import myHand from './MyHand';
 import opponentHand from './OpponentHand';
@@ -8,7 +8,7 @@ const dealHand = (Component) => {
   return class DealHand extends React.Component {
 
     componentWillEnter(cb) {
-      console.log('enter')
+      // console.log('enter')
       const {isPlayer} = this.props;
       let cards = findDOMNode(this).getElementsByClassName('card');
       cards = [].slice.call(cards, 0)
@@ -22,9 +22,9 @@ const dealHand = (Component) => {
     }
 
     componentWillLeave(cb) {
-      console.log('leave')
+      // console.log('leave')
       const {isPlayer, initial} = this.props;
-      console.log(this.props)
+      // console.log(this.props)
       const cards = findDOMNode(this).getElementsByClassName('card');
       if (!initial) {
         Animation.emptyHand(cards, {isPlayer}, cb);
@@ -34,7 +34,7 @@ const dealHand = (Component) => {
     }
 
     render() {
-      console.log(this.props)
+      // console.log(this.props)
       return (
         <Component { ...this.props } />
       )
