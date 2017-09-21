@@ -79,17 +79,17 @@ const shuffle = (newDeck) => {
   const deck = newDeck.slice();
   console.log('deck--->', deck)
   const myHand = [], opponentHand = [];
-  let random1, random2;
-  for (let i = 0; i < 2; i++) {
-    random1 = randomCardIndex();
-    myHand.push(deck[random1]);
-    deck.splice(random1, 1);
-    random2 = randomCardIndex();
-    while (random2 === random1) {
-      random2 = randomCardIndex();
-    }
-    opponentHand.push(deck[random2]);
+  let random, deckSize = 52;
+  for (let i = 0; i < 10; i++) {
+    random = randomCardIndex(deckSize);
+    console.log('random 1--->', random)
+    myHand.push(deck[random]);
     deck.splice(random, 1);
+    random = randomCardIndex(--deckSize);
+    console.log('random 2--->', random)
+    opponentHand.push(deck[random]);
+    deck.splice(random, 1);
+    deckSize--;
   }
   return {
     myHand,
@@ -98,5 +98,5 @@ const shuffle = (newDeck) => {
   }
 }
 
-const randomCardIndex = () => Math.floor(Math.random() * 52)
+const randomCardIndex = (numOfCards) => Math.floor(Math.random() * numOfCards)
 
