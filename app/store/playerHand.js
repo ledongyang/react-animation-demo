@@ -7,10 +7,13 @@ const GET_MY_HAND = 'GET_MY_HAND';
 const GET_OPPONENT_HAND = 'GET_OPPONENT_HAND';
 const GET_BOARD_HAND = 'GET_BOARD_HAND';
 const CHANGE_INITIAL_STATE = 'CHANGE_INITIAL_STATE';
+const GET_NEW_CARD = 'GET_NEW_CARD';
+const GET_UPDATED_DECK = 'GET_UPDATED_DECK';
 
 // initial state
 const initial_state = {
   initial: true,
+  drawingCard: {},
   myHand: [],
   opponentHand: [],
   boardHand: [],
@@ -53,6 +56,26 @@ const changeIntialState = () => (
   }
 )
 
+const getNewCard = (drawingCard) => (
+  {
+    type: GET_NEW_CARD,
+    drawingCard
+  }
+)
+
+const getUpdatedDeck = (deck) => {
+  {
+    type: GET_UPDATED_DECK,
+    deck
+  }
+}
+
+// const drawToHand = () => {
+//   {
+//     type: DRAW_TO_HAND,
+//   }
+// }
+
 // thunk creator
 export const initDeck = (newDeck) => {
   return function thunk (dispatch) {
@@ -68,6 +91,14 @@ export const shuffleHand = (newDeck) => {
     dispatch(getBoardHand(boardHand));
     dispatch(getDeck(deck));
     dispatch(changeIntialState());
+  }
+}
+
+export const drawToHand = (deck) => {
+  const {drawingCard, updatedDeck} = drawACard(deck);
+  return function thunk (dispatch) {
+    dispatch(getNewCard(drawingCard));
+    dispatch(getUpdatedDeck(updatedDeck));
   }
 }
 
@@ -99,6 +130,16 @@ export default function (state = initial_state, action) {
         ...state,
         initial: action.initial
       }
+    case GET_NEW_CARD:
+      return {
+        ...state,
+        drawingCard: action.drawingCard
+      }
+    case GET_UPDATED_DECK:
+      return {
+        ...state,
+        deck: action.deck
+      }
     default:
       return state;
   }
@@ -109,7 +150,7 @@ const shuffle = (newDeck) => {
   const deck = newDeck.slice();
   // console.log('deck--->', deck)
   const myHand = [], opponentHand = [], boardHand = [];
-  let random, deckSize = 52, handSize = 2, boardHandSize = 3;
+  let random, deckSize = deck.length, handSize = 2, boardHandSize = 3;
   for (let i = 0; i < handSize; i++) {
     random = randomCardIndex(deckSize--);
     // console.log('random 1--->', random)
@@ -135,5 +176,16 @@ const shuffle = (newDeck) => {
   }
 }
 
-const randomCardIndex = (numOfCards) => Math.floor(Math.random() * numOfCards)
+const drawACard = (deck) => {
+  const deckSize = deck.length;
+  const random = randomCardIndex(deckSize);
+  const drawingCard = deck[random];
+  deck.splice(random, 1);
+  return {
+    drawingCard,
+    updatedDeck: deck
+  }
+}
+
+const randomCardIndex = (numOfCards) => Math.floor(Math.random() * numOfCards);
 
