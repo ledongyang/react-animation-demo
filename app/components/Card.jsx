@@ -1,6 +1,7 @@
 import React from 'react';
 
 const Card = (props) => {
+  console.log('card props--->', props)
   const {cardFront, cardBack} = props;
   let frontStyle = {
     backgroundImage: `url(${cardFront})`,

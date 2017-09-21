@@ -12,14 +12,14 @@ class Table extends Component {
     super();
     this.state = {
       initial: true,
-      myHandId: 1,
-      opponentHandId: 2,
-      cardBack: './images/cardback.jpg',
-      myHandCards: [],
-      opponentHandCards: []
+      // myHandId: 1,
+      // opponentHandId: 1,
+      cardBack: './images/cardBack/cardback.jpg',
+      // myHandCards: [],
+      // opponentHandCards: []
     }
     // console.log('props--->', this.props)
-    // this.deal = this.deal.bind(this);
+    // this.props.deal = this.props.deal.bind(this);
     // this.draw = this.draw.bind(this);
   }
 
@@ -43,6 +43,7 @@ class Table extends Component {
   componentDidMount() {
     // console.log('new deck--->', deckData)
     // const newDeck = deckData.slice();
+    // this.props.deal = this.props.deal.bind(this);
     this.props.loadInitialData(deckData);
     // console.log('props', this.props)
   }
@@ -51,10 +52,10 @@ class Table extends Component {
     console.log('props===>', this.props)
     return (
       <div className="table">
-        <Deck onClick={this.draw} />
+        <Deck />
         <TransitionGroup>
-          <MyHand key={this.state.myHandId} { ...this.state } isPlayer={true} />
-          <OpponentHand key={this.state.opponentHandId} { ...this.state } isPlayer={false} />
+          <MyHand key={Math.random()} { ...this.props } isPlayer={true} localState = {this.state}/>
+          <OpponentHand key={Math.random()} { ...this.props } isPlayer={false} localState = {this.state}/>
         </TransitionGroup>
         <button onClick={this.props.deal} className="deal-btn btn-primary">Deal</button>
       </div>
@@ -80,6 +81,12 @@ const mapDispatch = (dispatch) => {
       // const newDeck = deckData.slice();
       // console.log('deck after shuffle---->', deck)
       // dispatch(initDeck(deck));
+      // this.setState({
+      //   initial: false,
+      //   myHandId: this.state.myHandId + 2,
+      //   opponentHandId: this.state.opponentHandId + 2
+      // })
+      // console.log('this-->', this)
       dispatch(shuffleHand(deckData));
     }
   }

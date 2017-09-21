@@ -2,11 +2,12 @@ import React from 'react';
 import Card from './Card';
 
 const OpponentHand = (props) => {
-  const {opponentHandCards, cardBack} = props;
+  const {opponentHand} = props;
+  const {cardBack} = props.localState;
   return (
     <div className="opponentHand">
       {
-        opponentHandCards.map((handCard) =>
+        opponentHand.map((handCard) =>
           <Card key={handCard.id} {...handCard} cardBack={cardBack} />
         )
       }

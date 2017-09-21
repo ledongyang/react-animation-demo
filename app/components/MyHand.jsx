@@ -2,12 +2,14 @@ import React from 'react';
 import Card from './Card';
 
 const MyHand = (props) => {
-  const {myHandCards, cardBack} = props;
-  // console.log(myHandCards)
+  console.log('my hand props===>', props)
+  const {myHand} = props;
+  const {cardBack} = props.localState;
+  console.log(myHand)
   return (
     <div className="myHand">
       {
-        myHandCards.map((handCard) =>
+        myHand.map((handCard) =>
           <Card key={handCard.id} {...handCard} cardBack={cardBack} />
         )
       }

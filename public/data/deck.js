@@ -1,10 +1,10 @@
 const deck = [];
 const cardFront = [
-  './images/heart3.png',
-  './images/hearta.png',
-  './images/heart2.png',
-  './images/diamond10.png',
-  './images/black7.png'
+  './images/cardFront/heart3.png',
+  './images/cardFront/hearta.png',
+  './images/cardFront/heart2.png',
+  './images/cardFront/diamond10.png',
+  './images/cardFront/black7.png'
 ];
 
 for (let i = 0; i < 52; i++) {

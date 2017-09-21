@@ -9,6 +9,7 @@ const dealHand = (Component) => {
 
     componentWillEnter(cb) {
       // console.log('enter')
+      console.log(this.props)
       const {isPlayer} = this.props;
       let cards = findDOMNode(this).getElementsByClassName('card');
       cards = [].slice.call(cards, 0)

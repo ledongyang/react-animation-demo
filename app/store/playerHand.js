@@ -77,16 +77,16 @@ export default function (state = initial_state, action) {
 // helper functions
 const shuffle = (newDeck) => {
   const deck = newDeck.slice();
-  console.log('deck--->', deck)
+  // console.log('deck--->', deck)
   const myHand = [], opponentHand = [];
-  let random, deckSize = 52;
-  for (let i = 0; i < 10; i++) {
+  let random, deckSize = 52, handSize = 2;
+  for (let i = 0; i < 2; i++) {
     random = randomCardIndex(deckSize);
-    console.log('random 1--->', random)
+    // console.log('random 1--->', random)
     myHand.push(deck[random]);
     deck.splice(random, 1);
     random = randomCardIndex(--deckSize);
-    console.log('random 2--->', random)
+    // console.log('random 2--->', random)
     opponentHand.push(deck[random]);
     deck.splice(random, 1);
     deckSize--;
