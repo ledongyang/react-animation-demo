@@ -12,7 +12,9 @@ class Table extends Component {
     super(props);
     this.state = {
       cardBack: './images/cardBack/cardback.jpg',
-      deck: props.deck
+      deck: props.deck,
+      isDealing: false,
+      isDrawing: false
     }
     // console.log('props---->', props)
   }
@@ -21,8 +23,19 @@ class Table extends Component {
     this.props.loadInitialData(deckData);
   }
 
+  deal() {
+    this.setState({
+      isDealing: !state.isDealing
+    })
+    this.props.deal();
+  }
+
   draw() {
     const deck = this.props.deck;
+    this.setState({
+      isDrawing: !state.isDrawing,
+      isDealing: !state.isDealing
+    })
     this.props.draw(deck);
   }
 
@@ -35,7 +48,7 @@ class Table extends Component {
           <OpponentHand key={Math.random()} { ...this.props } isPlayer={false} localState={this.state}/>
           <BoardHand key={Math.random()} {...this.props} isBoard={true} localState={this.state}/>
         </TransitionGroup>
-        <button onClick={this.props.deal} className="deal-btn btn-primary">Deal</button>
+        <button onClick={this.deal.bind(this)} className="deal-btn btn-primary">Deal</button>
         <button onClick={this.draw.bind(this)} className="draw-btn btn-primary">Draw</button>
       </div>
     )
@@ -50,7 +63,7 @@ const mapState = (state) => {
     myHand: state.playerHand.myHand,
     opponentHand: state.playerHand.opponentHand,
     boardHand: state.playerHand.boardHand,
-    drawingCard: state.playerHand.drawingCard
+    drawingCard: state.playerHand.drawingCard //add this new card to my hand
   }
 }
 

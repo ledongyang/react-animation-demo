@@ -70,12 +70,6 @@ const getUpdatedDeck = (deck) => {
   }
 }
 
-// const drawToHand = () => {
-//   {
-//     type: DRAW_TO_HAND,
-//   }
-// }
-
 // thunk creator
 export const initDeck = (newDeck) => {
   return function thunk (dispatch) {

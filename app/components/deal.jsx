@@ -12,6 +12,7 @@ const deal = (Component) => {
       // console.log('enter')
       // console.log(this.props)
       const {isPlayer, isBoard} = this.props;
+      const {isDealing} = this.props.localState;
       let cards = findDOMNode(this).getElementsByClassName('card');
       cards = [].slice.call(cards, 0)
       const frontCards = cards.map(card =>
@@ -20,20 +21,23 @@ const deal = (Component) => {
       const backCards = cards.map(card =>
         card.getElementsByClassName('cardBack')[0]
       )
-      Animation.dealHand(cards, frontCards, backCards, {isPlayer, isBoard}, cb)
+      if (isDealing) {
+        Animation.dealHand(cards, frontCards, backCards, {isPlayer, isBoard}, cb)
+      }
     }
 
     componentWillLeave(cb) {
       // console.log('leave')
       const {isPlayer, initial, isBoard} = this.props;
+      const {isDealing} = this.props.localState;
       // const {initial} = this.props.localState;
       // console.log(this.props)
       // console.log('*****++++>', this.props)
       const cards = findDOMNode(this).getElementsByClassName('card');
       if (!initial) {
-        if (!isBoard) {
+        if (!isBoard && isDealing) {
           Animation.emptyHand(cards, {isPlayer}, cb);
-        } else if (isBoard) {
+        } else if (isBoard && isDealing) {
           // console.log('test--->')
           Animation.emptyBoard(cards, {isBoard}, cb);
         }
