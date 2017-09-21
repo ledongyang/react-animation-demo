@@ -2,10 +2,10 @@ import React from 'react';
 import Card from './Card';
 
 const MyHand = (props) => {
-  console.log('my hand props===>', props)
+  // console.log('my hand props===>', props)
   const {myHand} = props;
   const {cardBack} = props.localState;
-  console.log(myHand)
+  // console.log(myHand)
   return (
     <div className="myHand">
       {

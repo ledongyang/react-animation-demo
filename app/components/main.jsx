@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { TransitionGroup } from 'react-transition-group';
 import Deck from './Deck';
-import {MyHand, OpponentHand, BoardHand} from './dealHand';
+import {MyHand, OpponentHand, BoardHand} from './deal';
 import { initDeck, shuffleHand } from '../store';
 import deckData from '../../public/data/deck';
 
@@ -11,7 +11,7 @@ class Table extends Component {
   constructor() {
     super();
     this.state = {
-      initial: true,
+      // initial: true,
       // myHandId: 1,
       // opponentHandId: 1,
       cardBack: './images/cardBack/cardback.jpg',
@@ -49,7 +49,7 @@ class Table extends Component {
   }
 
   render() {
-    console.log('props===>', this.props)
+    // console.log('props===>', this.props)
     return (
       <div className="table">
         <Deck />
@@ -67,6 +67,7 @@ class Table extends Component {
 const mapState = (state) => {
   // console.log('state===>', state)
   return {
+    initial: state.playerHand.initial,
     deck: state.playerHand.deck,
     myHand: state.playerHand.myHand,
     opponentHand: state.playerHand.opponentHand,

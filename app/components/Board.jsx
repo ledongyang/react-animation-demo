@@ -6,7 +6,7 @@ const Board = (props) => {
   // const {myHand} = props;
   // const {cardBack} = props.localState;
   // console.log(myHand)
-  console.log('board props===>', props)
+  // console.log('board props===>', props)
   const {boardHand} = props;
   const {cardBack} = props.localState;
   return (

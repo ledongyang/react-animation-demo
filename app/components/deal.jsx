@@ -5,12 +5,12 @@ import myHand from './MyHand';
 import opponentHand from './OpponentHand';
 import boardHand from './Board';
 
-const dealHand = (Component) => {
-  return class DealHand extends React.Component {
+const deal = (Component) => {
+  return class Deal extends React.Component {
 
     componentWillEnter(cb) {
       // console.log('enter')
-      console.log(this.props)
+      // console.log(this.props)
       const {isPlayer, isBoard} = this.props;
       let cards = findDOMNode(this).getElementsByClassName('card');
       cards = [].slice.call(cards, 0)
@@ -25,11 +25,18 @@ const dealHand = (Component) => {
 
     componentWillLeave(cb) {
       // console.log('leave')
-      const {isPlayer, initial} = this.props;
+      const {isPlayer, initial, isBoard} = this.props;
+      // const {initial} = this.props.localState;
       // console.log(this.props)
+      // console.log('*****++++>', this.props)
       const cards = findDOMNode(this).getElementsByClassName('card');
       if (!initial) {
-        Animation.emptyHand(cards, {isPlayer}, cb);
+        if (!isBoard) {
+          Animation.emptyHand(cards, {isPlayer}, cb);
+        } else if (isBoard) {
+          // console.log('test--->')
+          Animation.emptyBoard(cards, {isBoard}, cb);
+        }
       } else {
         cb();
       }
@@ -44,6 +51,6 @@ const dealHand = (Component) => {
   }
 }
 
-export const MyHand = dealHand(myHand);
-export const OpponentHand = dealHand(opponentHand);
-export const BoardHand = dealHand(boardHand);
+export const MyHand = deal(myHand);
+export const OpponentHand = deal(opponentHand);
+export const BoardHand = deal(boardHand);

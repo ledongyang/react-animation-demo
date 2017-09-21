@@ -6,9 +6,11 @@ const GET_DECK = 'GET_DECK';
 const GET_MY_HAND = 'GET_MY_HAND';
 const GET_OPPONENT_HAND = 'GET_OPPONENT_HAND';
 const GET_BOARD_HAND = 'GET_BOARD_HAND';
+const CHANGE_INITIAL_STATE = 'CHANGE_INITIAL_STATE';
 
 // initial state
 const initial_state = {
+  initial: true,
   myHand: [],
   opponentHand: [],
   boardHand: [],
@@ -44,6 +46,13 @@ const getBoardHand = boardHand => (
   }
 )
 
+const changeIntialState = () => (
+  {
+    type: CHANGE_INITIAL_STATE,
+    initial: false
+  }
+)
+
 // thunk creator
 export const initDeck = (newDeck) => {
   return function thunk (dispatch) {
@@ -52,12 +61,13 @@ export const initDeck = (newDeck) => {
 }
 
 export const shuffleHand = (newDeck) => {
-  const {myHand, opponentHand, boardHand, deck} = shuffle(newDeck);
+  const {initial, myHand, opponentHand, boardHand, deck} = shuffle(newDeck);
   return function thunk (dispatch) {
     dispatch(getMyHand(myHand));
     dispatch(getOpponentHand(opponentHand));
     dispatch(getBoardHand(boardHand));
     dispatch(getDeck(deck));
+    dispatch(changeIntialState());
   }
 }
 
@@ -83,6 +93,11 @@ export default function (state = initial_state, action) {
       return {
         ...state,
         boardHand: action.boardHand
+      }
+    case CHANGE_INITIAL_STATE:
+      return {
+        ...state,
+        initial: action.initial
       }
     default:
       return state;
@@ -112,6 +127,7 @@ const shuffle = (newDeck) => {
     deck.splice(random, 1);
   }
   return {
+    initial: false,
     myHand,
     opponentHand,
     boardHand,
