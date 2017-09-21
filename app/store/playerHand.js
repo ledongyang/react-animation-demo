@@ -5,11 +5,13 @@ const INIT_DECK = 'INIT_DECK';
 const GET_DECK = 'GET_DECK';
 const GET_MY_HAND = 'GET_MY_HAND';
 const GET_OPPONENT_HAND = 'GET_OPPONENT_HAND';
+const GET_BOARD_HAND = 'GET_BOARD_HAND';
 
 // initial state
 const initial_state = {
   myHand: [],
   opponentHand: [],
+  boardHand: [],
   deck
 }
 
@@ -35,6 +37,13 @@ const getOpponentHand = opponentHand => (
   }
 )
 
+const getBoardHand = boardHand => (
+  {
+    type: GET_BOARD_HAND,
+    boardHand
+  }
+)
+
 // thunk creator
 export const initDeck = (newDeck) => {
   return function thunk (dispatch) {
@@ -43,10 +52,11 @@ export const initDeck = (newDeck) => {
 }
 
 export const shuffleHand = (newDeck) => {
-  const {myHand, opponentHand, deck} = shuffle(newDeck);
+  const {myHand, opponentHand, boardHand, deck} = shuffle(newDeck);
   return function thunk (dispatch) {
     dispatch(getMyHand(myHand));
     dispatch(getOpponentHand(opponentHand));
+    dispatch(getBoardHand(boardHand));
     dispatch(getDeck(deck));
   }
 }
@@ -69,6 +79,11 @@ export default function (state = initial_state, action) {
         ...state,
         opponentHand: action.opponentHand
       }
+    case GET_BOARD_HAND:
+      return {
+        ...state,
+        boardHand: action.boardHand
+      }
     default:
       return state;
   }
@@ -78,22 +93,28 @@ export default function (state = initial_state, action) {
 const shuffle = (newDeck) => {
   const deck = newDeck.slice();
   // console.log('deck--->', deck)
-  const myHand = [], opponentHand = [];
-  let random, deckSize = 52, handSize = 2;
-  for (let i = 0; i < 2; i++) {
-    random = randomCardIndex(deckSize);
+  const myHand = [], opponentHand = [], boardHand = [];
+  let random, deckSize = 52, handSize = 2, boardHandSize = 3;
+  for (let i = 0; i < handSize; i++) {
+    random = randomCardIndex(deckSize--);
     // console.log('random 1--->', random)
     myHand.push(deck[random]);
     deck.splice(random, 1);
-    random = randomCardIndex(--deckSize);
+    random = randomCardIndex(deckSize--);
     // console.log('random 2--->', random)
     opponentHand.push(deck[random]);
     deck.splice(random, 1);
-    deckSize--;
+    // deckSize--;
+  }
+  for (let j = 0; j < boardHandSize; j++) {
+    random = randomCardIndex(deckSize--);
+    boardHand.push(deck[random]);
+    deck.splice(random, 1);
   }
   return {
     myHand,
     opponentHand,
+    boardHand,
     deck
   }
 }

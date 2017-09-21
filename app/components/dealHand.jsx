@@ -3,6 +3,7 @@ import Animation from './Animation/animation';
 import { findDOMNode } from 'react-dom';
 import myHand from './MyHand';
 import opponentHand from './OpponentHand';
+import boardHand from './Board';
 
 const dealHand = (Component) => {
   return class DealHand extends React.Component {
@@ -45,3 +46,4 @@ const dealHand = (Component) => {
 
 export const MyHand = dealHand(myHand);
 export const OpponentHand = dealHand(opponentHand);
+export const BoardHand = dealHand(boardHand);
