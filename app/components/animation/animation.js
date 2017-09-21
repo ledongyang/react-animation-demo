@@ -6,10 +6,15 @@ export default {
     const duration = 1;
     const stagger = 0.2;
     const position = 0;
-    let {isPlayer} = option;
+    console.log('option--->', option)
+    let {isPlayer, isBoard} = option;
     let ypos = isPlayer ? 600 : -50;
     let xpos = isPlayer ? 100 : 600;
-
+    if (isBoard) {
+      console.log('testest')
+      ypos = 300;
+      xpos = 300;
+    }
     const tl = new TimelineLite();
     tl.staggerTo(cards, duration, {
       cycle: {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { TransitionGroup } from 'react-transition-group';
 import Deck from './Deck';
-import {MyHand, OpponentHand} from './dealHand';
+import {MyHand, OpponentHand, BoardHand} from './dealHand';
 import { initDeck, shuffleHand } from '../store';
 import deckData from '../../public/data/deck';
 
@@ -54,8 +54,9 @@ class Table extends Component {
       <div className="table">
         <Deck />
         <TransitionGroup>
-          <MyHand key={Math.random()} { ...this.props } isPlayer={true} localState = {this.state}/>
-          <OpponentHand key={Math.random()} { ...this.props } isPlayer={false} localState = {this.state}/>
+          <MyHand key={Math.random()} { ...this.props } isPlayer={true} localState={this.state}/>
+          <OpponentHand key={Math.random()} { ...this.props } isPlayer={false} localState={this.state}/>
+          <BoardHand key={Math.random()} {...this.props} isBoard={true} localState={this.state}/>
         </TransitionGroup>
         <button onClick={this.props.deal} className="deal-btn btn-primary">Deal</button>
       </div>
@@ -68,7 +69,8 @@ const mapState = (state) => {
   return {
     deck: state.playerHand.deck,
     myHand: state.playerHand.myHand,
-    opponentHand: state.playerHand.opponentHand
+    opponentHand: state.playerHand.opponentHand,
+    boardHand: state.playerHand.boardHand
   }
 }
 

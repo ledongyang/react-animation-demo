@@ -6,12 +6,14 @@ const Board = (props) => {
   // const {myHand} = props;
   // const {cardBack} = props.localState;
   // console.log(myHand)
-  const boardCards = [];
+  console.log('board props===>', props)
+  const {boardHand} = props;
+  const {cardBack} = props.localState;
   return (
     <div className="board">
       {
-        boardCards.map((card) =>
-          <Card key={card.id} {...card} />
+        boardHand.map((card) =>
+          <Card key={card.id} {...card} cardBack={cardBack} />
         )
       }
     </div>
