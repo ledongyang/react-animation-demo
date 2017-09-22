@@ -13,7 +13,7 @@ class Card extends React.Component{
 
   playACard() {
     const card = this.props;
-    // this.props.playACard(card)
+    this.props.playACard(card)
   }
 
   render () {
