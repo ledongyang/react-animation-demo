@@ -3,16 +3,18 @@ import deck from '../../public/data/deck';
 // action types
 const INIT_DECK = 'INIT_DECK';
 const GET_DECK = 'GET_DECK';
+const GET_MY_BOARD = 'GET_MY_BOARD';
 const GET_MY_HAND = 'GET_MY_HAND';
 const GET_OPPONENT_HAND = 'GET_OPPONENT_HAND';
 const DRAW_TO_MY_HAND = 'DRAW_TO_MY_HAND';
+const PLAY_TO_MY_BOARD = 'PLAY_TO_MY_BOARD';
+const PLAY_FROM_MY_HAND = 'PLAY_FROM_MY_HAND';
 // const GET_BOARD_HAND = 'GET_BOARD_HAND';
 // const GET_NEW_CARD = 'GET_NEW_CARD';
 
 // initial state
 const initial_state = {
   // drawingCard: {},
-  handKeys: [],
   myHand: {
     id: null,
     handCards: []
@@ -20,6 +22,10 @@ const initial_state = {
   opponentHand: {
     id: null,
     handCards: []
+  },
+  myBoard: {
+    id: null,
+    boardCards: []
   },
   deck
 }
@@ -53,6 +59,27 @@ const drawToMyHand = drawingCard => (
   }
 )
 
+const playToMyBoard = playingCard => (
+  {
+    type: PLAY_TO_MY_BOARD,
+    playingCard
+  }
+)
+
+const playFromMyHand = playingCard => (
+  {
+    type: PLAY_FROM_MY_HAND,
+    playingCard
+  }
+)
+
+const getMyBoard = (myBoard) => (
+  {
+    type: GET_MY_BOARD,
+    myBoard
+  }
+)
+
 // const getBoardHand = boardHand => (
 //   {
 //     type: GET_BOARD_HAND,
@@ -75,11 +102,11 @@ export const initDeck = (newDeck) => {
 }
 
 export const shuffleHand = (newDeck) => {
-  const {myHand, opponentHand, deck} = shuffle(newDeck);
+  const {myHand, opponentHand, myBoard, deck} = shuffle(newDeck);
   return function thunk (dispatch) {
     dispatch(getMyHand(myHand));
     dispatch(getOpponentHand(opponentHand));
-    // dispatch(getBoardHand(boardHand));
+    dispatch(getMyBoard(myBoard));
     dispatch(getDeck(deck));
   }
 }
@@ -90,6 +117,13 @@ export const drawToHand = (deck) => {
     // dispatch(getNewCard(drawingCard));
     dispatch(drawToMyHand(drawingCard));
     dispatch(getDeck(updatedDeck));
+  }
+}
+
+export const playCard = (playingCard) => {
+  return function thunk (dispatch) {
+    dispatch(playToMyBoard(playingCard));
+    dispatch(playFromMyHand(playingCard));
   }
 }
 
@@ -111,12 +145,33 @@ export default function (state = initial_state, action) {
         ...state,
         opponentHand: action.opponentHand
       }
+    case GET_MY_BOARD:
+      return {
+        ...state,
+        myBoard: action.myBoard
+      }
     case DRAW_TO_MY_HAND:
       return {
         ...state,
         myHand: {
           ...state.myHand,
           handCards: [...state.myHand.handCards, action.drawingCard]
+        }
+      }
+    case PLAY_TO_MY_BOARD:
+      return {
+        ...state,
+        myBoard: {
+          ...state.myBoard,
+          boardCards: [...state.myBoard.boardCards, action.playingCard]
+        }
+      }
+    case PLAY_FROM_MY_HAND:
+      return {
+        ...state,
+        myHand: {
+          ...state.myHand,
+          handCards: state.myHand.handCards.filter(handCard => +handCard.id !== +action.playingCard.id)
         }
       }
     // case GET_BOARD_HAND:
@@ -144,7 +199,10 @@ const shuffle = (newDeck) => {
   }, opponentHand = {
     id: generateKey(),
     handCards: []
-  };
+  }, myBoard = {
+    id: generateKey(),
+    boardCards: []
+  }
   let random, deckSize = deck.length, handSize = 10;
   for (let i = 0; i < handSize; i++) {
     random = randomCardIndex(deckSize--);
@@ -164,6 +222,7 @@ const shuffle = (newDeck) => {
   // }
   return {
     myHand,
+    myBoard,
     opponentHand,
     deck
   }

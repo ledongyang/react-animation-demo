@@ -1,6 +1,8 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
+import { connect } from 'react-redux';
 import Animation from './animation/animation';
+import { playCard, changeStage } from '../store';
 
 class Card extends React.Component{
   // console.log('card props--->', props)
@@ -9,24 +11,9 @@ class Card extends React.Component{
 
   // }
 
-  componentWillEnter(cb) {
-    const {stage, index} = this.props;
-    // console.log('stage--->', stage)
-    const card = findDOMNode(this);
-    // console.log('card ---- > ', card)
-    const frontCard = card.getElementsByClassName('cardFront')[0];
-    // console.log('front card ----> ', frontCard)
-    const backCard = card.getElementsByClassName('cardBack')[0];
-    if (stage === 'draw') {
-      // console.log('card ---- > ', card)
-      console.log('index--->', index)
-      Animation.drawMyHand(card, frontCard, backCard, index, cb);
-    }
-    // cb()
-  }
-
-  componentWillLeave(cb) {
-    cb()
+  playACard() {
+    const card = this.props;
+    // this.props.playACard(card)
   }
 
   render () {
@@ -39,8 +26,9 @@ class Card extends React.Component{
       backgroundImage: `url(${cardBack})`,
       backgroundSize: 'cover'
     }
+    // console.log('card props-->', this.props.id)
     return (
-      <div className="card">
+      <div className="card" onClick={this.playACard.bind(this)} >
         <div className="cardFront" style={frontStyle} />
         <div className="cardBack" style={backStyle} />
       </div>
@@ -48,4 +36,21 @@ class Card extends React.Component{
   }
 }
 
-export default Card;
+const mapState = (state) => {
+  return {
+
+  }
+}
+
+const mapDispatch = (dispatch) => {
+  return {
+    playACard: (card) => {
+      // console.log('play the card ---> ', card)
+      dispatch(changeStage('play'))
+      dispatch(playCard(card));
+    }
+  }
+}
+
+export default connect(mapState, mapDispatch)(Card);
+// export default Card;

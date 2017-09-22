@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { TransitionGroup } from 'react-transition-group';
 import Deck from './Deck';
-import { MyHand, OpponentHand, BoardHand } from './deal';
+import { MyHand, OpponentHand } from './deal';
+import MyBoard from './Board';
 import { initDeck, shuffleHand, drawToHand, changeStage } from '../store';
 import deckData from '../../public/data/deck';
 
@@ -38,7 +39,7 @@ class Table extends Component {
         <TransitionGroup>
           <MyHand key={this.props.myHand.id} { ...this.props } isPlayer={true} localState={this.state}/>
           <OpponentHand key={this.props.opponentHand.id} { ...this.props } isPlayer={false} localState={this.state}/>
-          {/* <BoardHand key={Math.random()} {...this.props} isBoard={true} localState={this.state}/> */}
+          <MyBoard key={this.props.myBoard.id} {...this.props} isBoard={true} localState={this.state}/>
         </TransitionGroup>
         <button onClick={this.deal.bind(this)} className="deal-btn btn-primary">Start</button>
         <button onClick={this.draw.bind(this)} className="draw-btn btn-primary">Draw</button>
@@ -52,6 +53,7 @@ const mapState = (state) => {
   return {
     stage: state.stage,
     deck: state.playerHand.deck,
+    myBoard: state.playerHand.myBoard,
     myHand: state.playerHand.myHand,
     opponentHand: state.playerHand.opponentHand,
     // boardHand: state.playerHand.boardHand,

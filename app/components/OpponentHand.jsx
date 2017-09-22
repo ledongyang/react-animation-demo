@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from './Card';
+import {Card} from './draw';
 import { TransitionGroup } from 'react-transition-group';
 
 const OpponentHand = (props) => {

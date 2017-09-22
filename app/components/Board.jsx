@@ -1,22 +1,29 @@
 import React from 'react';
-import Card from './Card';
+import {Card} from './play';
+import { TransitionGroup } from 'react-transition-group';
 
-const Board = (props) => {
-  // console.log('my hand props===>', props)
-  // const {myHand} = props;
-  // const {cardBack} = props.localState;
-  // console.log(myHand)
-  // console.log('board props===>', props)
-  const {boardHand} = props;
-  const {cardBack} = props.localState;
-  return (
-    <div className="board">
-      {
-        boardHand.map((card) =>
-          <Card key={card.id} {...card} cardBack={cardBack} />
-        )
-      }
-    </div>
-  )
+class Board extends React.Component {
+
+  // componentWillEnter(cb) {
+  //   console.log('enter board')
+  //   cb();
+  // }
+
+  render() {
+    // console.log('my board --- > ', this.props.myBoard)
+    const {myBoard} = this.props;
+    // console.log('my board --- > ', myBoard);
+    return (
+      <div className="myBoard">
+        <TransitionGroup>
+        {
+          myBoard.boardCards.map((boardCard) =>
+            <Card key={boardCard.id} {...boardCard} />
+          )
+        }
+        </TransitionGroup>
+      </div>
+    )
+  }
 }
 export default Board;
