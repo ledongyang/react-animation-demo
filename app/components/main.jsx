@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { TransitionGroup } from 'react-transition-group';
 import Deck from './Deck';
-import {MyHand, OpponentHand, BoardHand} from './deal';
-import { initDeck, shuffleHand, drawToHand } from '../store';
+import { MyHand, OpponentHand, BoardHand } from './deal';
+import { initDeck, shuffleHand, drawToHand, changeStage } from '../store';
 import deckData from '../../public/data/deck';
 
 class Table extends Component {
@@ -12,11 +12,9 @@ class Table extends Component {
     super(props);
     this.state = {
       cardBack: './images/cardBack/cardback.jpg',
-      deck: props.deck,
-      isDealing: false,
-      isDrawing: false
+      deck: props.deck
     }
-    // console.log('props---->', props)
+    // console.log('default state', this.state)
   }
 
   componentDidMount() {
@@ -24,31 +22,25 @@ class Table extends Component {
   }
 
   deal() {
-    this.setState({
-      isDealing: !state.isDealing
-    })
     this.props.deal();
   }
 
   draw() {
-    const deck = this.props.deck;
-    this.setState({
-      isDrawing: !state.isDrawing,
-      isDealing: !state.isDealing
-    })
-    this.props.draw(deck);
+    const remainingDeck = this.props.deck;
+    this.props.draw(remainingDeck);
   }
 
   render() {
+    const keys = []
     return (
       <div className="table">
         <Deck />
         <TransitionGroup>
-          <MyHand key={Math.random()} { ...this.props } isPlayer={true} localState={this.state}/>
-          <OpponentHand key={Math.random()} { ...this.props } isPlayer={false} localState={this.state}/>
-          <BoardHand key={Math.random()} {...this.props} isBoard={true} localState={this.state}/>
+          <MyHand key={this.props.myHand.id} { ...this.props } isPlayer={true} localState={this.state}/>
+          <OpponentHand key={this.props.opponentHand.id} { ...this.props } isPlayer={false} localState={this.state}/>
+          {/* <BoardHand key={Math.random()} {...this.props} isBoard={true} localState={this.state}/> */}
         </TransitionGroup>
-        <button onClick={this.deal.bind(this)} className="deal-btn btn-primary">Deal</button>
+        <button onClick={this.deal.bind(this)} className="deal-btn btn-primary">Start</button>
         <button onClick={this.draw.bind(this)} className="draw-btn btn-primary">Draw</button>
       </div>
     )
@@ -56,13 +48,13 @@ class Table extends Component {
 }
 
 const mapState = (state) => {
-  console.log('state--->', state)
+  // console.log('state--->', state)
   return {
-    initial: state.playerHand.initial,
+    stage: state.stage,
     deck: state.playerHand.deck,
     myHand: state.playerHand.myHand,
     opponentHand: state.playerHand.opponentHand,
-    boardHand: state.playerHand.boardHand,
+    // boardHand: state.playerHand.boardHand,
     drawingCard: state.playerHand.drawingCard //add this new card to my hand
   }
 }
@@ -73,10 +65,12 @@ const mapDispatch = (dispatch, ownProps) => {
       dispatch(initDeck(deckdata));
     },
     deal: () => {
+      dispatch(changeStage('deal'))
       dispatch(shuffleHand(deckData));
     },
     draw: (deck) => {
       // console.log('deck--->', deck)
+      dispatch(changeStage('draw'))
       dispatch(drawToHand(deck));
     }
   }

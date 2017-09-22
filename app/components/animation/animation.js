@@ -7,14 +7,9 @@ export default {
     const stagger = 0.2;
     const position = 0;
     // console.log('option--->', option)
-    let {isPlayer, isBoard} = option;
+    let {isPlayer} = option;
     let ypos = isPlayer ? 600 : -50;
     let xpos = isPlayer ? 100 : 600;
-    if (isBoard) {
-      // console.log('testest')
-      ypos = 300;
-      xpos = 300;
-    }
     const tl = new TimelineLite();
     tl.staggerTo(cards, duration, {
       cycle: {
@@ -26,7 +21,7 @@ export default {
         }
       }
     }, stagger, position, cb)
-    if (isPlayer || isBoard) {
+    if (isPlayer) {
       tl
       .staggerTo(backCards, 1, {
         rotationY: -180
@@ -58,5 +53,16 @@ export default {
     tl.staggerTo(cards, duration, {
       x: xpos
     }, stagger, position, cb)
+  },
+  drawMyHand: (card, frontCard, backCard, index, cb) => {
+    TweenMax.set(frontCard, {rotationY: -180})
+    const duration = 1;
+    const position = 0;
+    const ypos = 600;
+    const xpos = 100 + (index + 1) * 50
+    const tl = new TimelineLite({onComplete:cb});
+    tl.to(card, duration, {x: xpos, y: ypos}, position)
+    .to(backCard, duration, {rotationY: -180}, position)
+    .to(frontCard, duration, {rotationY: 0}, position)
   }
 }

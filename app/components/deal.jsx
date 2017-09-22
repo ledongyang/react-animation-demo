@@ -1,5 +1,5 @@
 import React from 'react';
-import Animation from './Animation/animation';
+import Animation from './animation/animation';
 import { findDOMNode } from 'react-dom';
 import myHand from './MyHand';
 import opponentHand from './OpponentHand';
@@ -11,36 +11,37 @@ const deal = (Component) => {
     componentWillEnter(cb) {
       // console.log('enter')
       // console.log(this.props)
-      const {isPlayer, isBoard} = this.props;
-      const {isDealing} = this.props.localState;
+      const {isPlayer, stage} = this.props;
+      // const {isDealing} = this.props.localState;
       let cards = findDOMNode(this).getElementsByClassName('card');
       cards = [].slice.call(cards, 0)
+      // console.log('cards array--->', cards)
       const frontCards = cards.map(card =>
         card.getElementsByClassName('cardFront')[0]
       )
       const backCards = cards.map(card =>
         card.getElementsByClassName('cardBack')[0]
       )
-      if (isDealing) {
-        Animation.dealHand(cards, frontCards, backCards, {isPlayer, isBoard}, cb)
+      if (stage === 'deal') {
+        Animation.dealHand(cards, frontCards, backCards, {isPlayer}, cb)
       }
     }
 
     componentWillLeave(cb) {
       // console.log('leave')
-      const {isPlayer, initial, isBoard} = this.props;
-      const {isDealing} = this.props.localState;
+      const {isPlayer, stage} = this.props;
+      // const {isDealing} = this.props.localState;
       // const {initial} = this.props.localState;
       // console.log(this.props)
-      // console.log('*****++++>', this.props)
+      console.log('*****++++>', this.props.localState)
       const cards = findDOMNode(this).getElementsByClassName('card');
-      if (!initial) {
-        if (!isBoard && isDealing) {
-          Animation.emptyHand(cards, {isPlayer}, cb);
-        } else if (isBoard && isDealing) {
-          // console.log('test--->')
-          Animation.emptyBoard(cards, {isBoard}, cb);
-        }
+      if (stage !== 'initial') {
+        // if (stage === 'deal') {
+        Animation.emptyHand(cards, {isPlayer}, cb);
+        // } else if (isBoard && stage === 'deal') {
+        //   // console.log('test--->')
+        //   Animation.emptyBoard(cards, {isBoard}, cb);
+        // }
       } else {
         cb();
       }

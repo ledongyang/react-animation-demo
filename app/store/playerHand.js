@@ -5,18 +5,22 @@ const INIT_DECK = 'INIT_DECK';
 const GET_DECK = 'GET_DECK';
 const GET_MY_HAND = 'GET_MY_HAND';
 const GET_OPPONENT_HAND = 'GET_OPPONENT_HAND';
-const GET_BOARD_HAND = 'GET_BOARD_HAND';
-const CHANGE_INITIAL_STATE = 'CHANGE_INITIAL_STATE';
-const GET_NEW_CARD = 'GET_NEW_CARD';
-const GET_UPDATED_DECK = 'GET_UPDATED_DECK';
+const DRAW_TO_MY_HAND = 'DRAW_TO_MY_HAND';
+// const GET_BOARD_HAND = 'GET_BOARD_HAND';
+// const GET_NEW_CARD = 'GET_NEW_CARD';
 
 // initial state
 const initial_state = {
-  initial: true,
-  drawingCard: {},
-  myHand: [],
-  opponentHand: [],
-  boardHand: [],
+  // drawingCard: {},
+  handKeys: [],
+  myHand: {
+    id: null,
+    handCards: []
+  },
+  opponentHand: {
+    id: null,
+    handCards: []
+  },
   deck
 }
 
@@ -42,33 +46,26 @@ const getOpponentHand = opponentHand => (
   }
 )
 
-const getBoardHand = boardHand => (
+const drawToMyHand = drawingCard => (
   {
-    type: GET_BOARD_HAND,
-    boardHand
-  }
-)
-
-const changeIntialState = () => (
-  {
-    type: CHANGE_INITIAL_STATE,
-    initial: false
-  }
-)
-
-const getNewCard = (drawingCard) => (
-  {
-    type: GET_NEW_CARD,
+    type: DRAW_TO_MY_HAND,
     drawingCard
   }
 )
 
-const getUpdatedDeck = (deck) => {
-  {
-    type: GET_UPDATED_DECK,
-    deck
-  }
-}
+// const getBoardHand = boardHand => (
+//   {
+//     type: GET_BOARD_HAND,
+//     boardHand
+//   }
+// )
+
+// const getNewCard = (drawingCard) => (
+//   {
+//     type: GET_NEW_CARD,
+//     drawingCard
+//   }
+// )
 
 // thunk creator
 export const initDeck = (newDeck) => {
@@ -78,21 +75,21 @@ export const initDeck = (newDeck) => {
 }
 
 export const shuffleHand = (newDeck) => {
-  const {initial, myHand, opponentHand, boardHand, deck} = shuffle(newDeck);
+  const {myHand, opponentHand, deck} = shuffle(newDeck);
   return function thunk (dispatch) {
     dispatch(getMyHand(myHand));
     dispatch(getOpponentHand(opponentHand));
-    dispatch(getBoardHand(boardHand));
+    // dispatch(getBoardHand(boardHand));
     dispatch(getDeck(deck));
-    dispatch(changeIntialState());
   }
 }
 
 export const drawToHand = (deck) => {
   const {drawingCard, updatedDeck} = drawACard(deck);
   return function thunk (dispatch) {
-    dispatch(getNewCard(drawingCard));
-    dispatch(getUpdatedDeck(updatedDeck));
+    // dispatch(getNewCard(drawingCard));
+    dispatch(drawToMyHand(drawingCard));
+    dispatch(getDeck(updatedDeck));
   }
 }
 
@@ -114,26 +111,24 @@ export default function (state = initial_state, action) {
         ...state,
         opponentHand: action.opponentHand
       }
-    case GET_BOARD_HAND:
+    case DRAW_TO_MY_HAND:
       return {
         ...state,
-        boardHand: action.boardHand
+        myHand: {
+          ...state.myHand,
+          handCards: [...state.myHand.handCards, action.drawingCard]
+        }
       }
-    case CHANGE_INITIAL_STATE:
-      return {
-        ...state,
-        initial: action.initial
-      }
-    case GET_NEW_CARD:
-      return {
-        ...state,
-        drawingCard: action.drawingCard
-      }
-    case GET_UPDATED_DECK:
-      return {
-        ...state,
-        deck: action.deck
-      }
+    // case GET_BOARD_HAND:
+    //   return {
+    //     ...state,
+    //     boardHand: action.boardHand
+    //   }
+    // case GET_NEW_CARD:
+    //   return {
+    //     ...state,
+    //     drawingCard: action.drawingCard
+    //   }
     default:
       return state;
   }
@@ -143,29 +138,33 @@ export default function (state = initial_state, action) {
 const shuffle = (newDeck) => {
   const deck = newDeck.slice();
   // console.log('deck--->', deck)
-  const myHand = [], opponentHand = [], boardHand = [];
-  let random, deckSize = deck.length, handSize = 2, boardHandSize = 3;
+  const myHand = {
+    id: generateKey(),
+    handCards: []
+  }, opponentHand = {
+    id: generateKey(),
+    handCards: []
+  };
+  let random, deckSize = deck.length, handSize = 10;
   for (let i = 0; i < handSize; i++) {
     random = randomCardIndex(deckSize--);
     // console.log('random 1--->', random)
-    myHand.push(deck[random]);
+    myHand.handCards.push(deck[random]);
     deck.splice(random, 1);
     random = randomCardIndex(deckSize--);
     // console.log('random 2--->', random)
-    opponentHand.push(deck[random]);
+    opponentHand.handCards.push(deck[random]);
     deck.splice(random, 1);
     // deckSize--;
   }
-  for (let j = 0; j < boardHandSize; j++) {
-    random = randomCardIndex(deckSize--);
-    boardHand.push(deck[random]);
-    deck.splice(random, 1);
-  }
+  // for (let j = 0; j < boardHandSize; j++) {
+  //   random = randomCardIndex(deckSize--);
+  //   boardHand.push(deck[random]);
+  //   deck.splice(random, 1);
+  // }
   return {
-    initial: false,
     myHand,
     opponentHand,
-    boardHand,
     deck
   }
 }
@@ -183,3 +182,4 @@ const drawACard = (deck) => {
 
 const randomCardIndex = (numOfCards) => Math.floor(Math.random() * numOfCards);
 
+const generateKey = () => Math.random();
