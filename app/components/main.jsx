@@ -12,7 +12,7 @@ class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cardBack: './images/cardBack/cardBack-02.jpg',
+      cardBack: './images/cardBack/cardBack-dragon.jpg',
       deck: props.deck
     }
     // console.log('default state', this.state)
@@ -39,7 +39,7 @@ class Table extends Component {
         <TransitionGroup>
           <MyHand key={this.props.myHand.id} { ...this.props } isPlayer={true} localState={this.state}/>
           <OpponentHand key={this.props.opponentHand.id} { ...this.props } isPlayer={false} localState={this.state}/>
-          <MyBoard key={this.props.myBoard.id} {...this.props} isBoard={true} localState={this.state}/>
+          <MyBoard key={this.props.myBoard.id} {...this.props} isPlayer={true} isBoard={true} localState={this.state}/>
         </TransitionGroup>
         <button onClick={this.deal.bind(this)} className="deal-btn btn-primary">Start</button>
         <button onClick={this.draw.bind(this)} className="draw-btn btn-primary">Draw</button>
@@ -56,6 +56,7 @@ const mapState = (state) => {
     myBoard: state.playerHand.myBoard,
     myHand: state.playerHand.myHand,
     opponentHand: state.playerHand.opponentHand,
+    cardDetail: state.playerHand.cardDetail,
     // boardHand: state.playerHand.boardHand,
     drawingCard: state.playerHand.drawingCard //add this new card to my hand
   }

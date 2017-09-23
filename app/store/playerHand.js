@@ -9,6 +9,7 @@ const GET_OPPONENT_HAND = 'GET_OPPONENT_HAND';
 const DRAW_TO_MY_HAND = 'DRAW_TO_MY_HAND';
 const PLAY_TO_MY_BOARD = 'PLAY_TO_MY_BOARD';
 const PLAY_FROM_MY_HAND = 'PLAY_FROM_MY_HAND';
+const GET_CARD_DETAIL = 'GET_CARD_DETAIL';
 // const GET_BOARD_HAND = 'GET_BOARD_HAND';
 // const GET_NEW_CARD = 'GET_NEW_CARD';
 
@@ -27,6 +28,7 @@ const initial_state = {
     id: null,
     boardCards: []
   },
+  cardDetail: {},
   deck
 }
 
@@ -80,6 +82,13 @@ const getMyBoard = (myBoard) => (
   }
 )
 
+const getCardDetail = (card) => (
+  {
+    type: GET_CARD_DETAIL,
+    card
+  }
+)
+
 // const getBoardHand = boardHand => (
 //   {
 //     type: GET_BOARD_HAND,
@@ -122,8 +131,20 @@ export const drawToHand = (deck) => {
 
 export const playCard = (playingCard) => {
   return function thunk (dispatch) {
-    dispatch(playToMyBoard(playingCard));
     dispatch(playFromMyHand(playingCard));
+    dispatch(playToMyBoard(playingCard));
+  }
+}
+
+export const showCardDetail = (card) => {
+  return function thunk (dispatch) {
+    dispatch(getCardDetail(card));
+  }
+}
+
+export const evolve = (card1, card2) => {
+  return function thunk (dispatch) {
+
   }
 }
 
@@ -174,16 +195,11 @@ export default function (state = initial_state, action) {
           handCards: state.myHand.handCards.filter(handCard => +handCard.id !== +action.playingCard.id)
         }
       }
-    // case GET_BOARD_HAND:
-    //   return {
-    //     ...state,
-    //     boardHand: action.boardHand
-    //   }
-    // case GET_NEW_CARD:
-    //   return {
-    //     ...state,
-    //     drawingCard: action.drawingCard
-    //   }
+    case GET_CARD_DETAIL:
+      return {
+        ...state,
+        cardDetail: action.card
+      }
     default:
       return state;
   }
@@ -203,7 +219,7 @@ const shuffle = (newDeck) => {
     id: generateKey(),
     boardCards: []
   }
-  let random, deckSize = deck.length, handSize = 10;
+  let random, deckSize = deck.length, handSize = 5;
   for (let i = 0; i < handSize; i++) {
     random = randomCardIndex(deckSize--);
     // console.log('random 1--->', random)
