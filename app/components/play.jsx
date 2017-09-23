@@ -7,13 +7,18 @@ const play = (Component) => {
   return class Play extends React.Component {
     componentWillEnter(cb) {
       console.log('i enter to board')
-      const {stage, index} = this.props;
+      // console.log('board', this.props)
+      const {stage, myBoard} = this.props;
       // console.log('stage--->', stage)
       const card = findDOMNode(this);
+      const index = myBoard.boardCards.length;
+      // console.log('index', index)
+      Animation.playToMyBoard(card, index, cb);
       // console.log('card ---- > ', card)
-      const frontCard = card.getElementsByClassName('cardFront')[0];
+      // const frontCard = card.getElementsByClassName('cardFront')[0];
       // console.log('front card ----> ', frontCard)
-      const backCard = card.getElementsByClassName('cardBack')[0];
+      // const backCard = card.getElementsByClassName('cardBack')[0];
+
     }
 
     componentWillLeave(cb) {

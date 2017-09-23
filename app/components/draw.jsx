@@ -5,25 +5,43 @@ import card from './Card';
 
 const draw = (Component) => {
   return class Draw extends React.Component {
+    componentWillAppear(cb) {
+      const {card, playACard, isPlayer} = this.props;
+      const handCard = findDOMNode(this);
+      // console.log('handcard-->', handCard);
+      // if (isPlayer) {
+      //   playACard();
+      // }
+      if (isPlayer) {
+        Animation.draggable(handCard, card, playACard, isPlayer);
+      }
+      cb()
+    }
+
     componentWillEnter(cb) {
       // console.log('enter')
-      const {stage, index} = this.props;
-      // console.log('stage--->', stage)
-      const card = findDOMNode(this);
+      const {stage, index, card, playACard, isPlayer} = this.props;
+      // console.log('draw props--->', this.props)
+      const handCard = findDOMNode(this);
       // console.log('card ---- > ', card)
-      const frontCard = card.getElementsByClassName('cardFront')[0];
+      const frontCard = handCard.getElementsByClassName('cardFront')[0];
       // console.log('front card ----> ', frontCard)
-      const backCard = card.getElementsByClassName('cardBack')[0];
+      const backCard = handCard.getElementsByClassName('cardBack')[0];
       if (stage === 'draw') {
+        Animation.draggable(handCard, card, playACard, isPlayer);
         // console.log('card ---- > ', card)
         console.log('index--->', index)
-        Animation.drawMyHand(card, frontCard, backCard, index, cb);
+        Animation.drawMyHand(handCard, frontCard, backCard, index, cb);
       }
     }
 
     componentWillLeave(cb) {
       console.log('i leaving from hand')
-      cb()
+      // console.log('props--->', this.props)
+      const {myBoard} = this.props;
+      const handCard = findDOMNode(this);
+      const index = myBoard.boardCards.length;
+      Animation.leavingMyHand(handCard, index, cb)
     }
 
     render() {

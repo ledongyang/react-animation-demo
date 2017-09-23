@@ -10,7 +10,7 @@ const OpponentHand = (props) => {
       <TransitionGroup>
       {
         opponentHand.handCards.map((handCard) =>
-          <Card key={handCard.id} {...handCard} stage={stage} cardBack={cardBack} />
+          <Card key={handCard.id} card={handCard} stage={stage} cardBack={cardBack} />
         )
       }
       </TransitionGroup>

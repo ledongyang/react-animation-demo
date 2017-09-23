@@ -4,7 +4,6 @@ import { findDOMNode } from 'react-dom';
 import myHand from './MyHand';
 import opponentHand from './OpponentHand';
 import boardHand from './Board';
-import Draggable from "gsap/Draggable";
 
 const deal = (Component) => {
   return class Deal extends React.Component {
@@ -13,17 +12,15 @@ const deal = (Component) => {
       // console.log('enter')
       // console.log(this.props)
       const {isPlayer, stage} = this.props;
+      // console.log('props--->', this.props)
       // const {isDealing} = this.props.localState;
       let cards = findDOMNode(this).getElementsByClassName('card');
       cards = [].slice.call(cards, 0)
-      cards.forEach(card => {
-        Draggable.create(card, {
-          type:"x,y",
-          edgeResistance:0.65,
-          bounds:".table",
-          throwProps:true
-        })
-      })
+      // if (isPlayer) {
+      //   cards.forEach(card => {
+      //     Animation.draggable(card, this.props);
+      //   })
+      // }
       // console.log('cards array--->', cards)
       const frontCards = cards.map(card =>
         card.getElementsByClassName('cardFront')[0]

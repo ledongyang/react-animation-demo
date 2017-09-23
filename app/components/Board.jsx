@@ -12,13 +12,14 @@ class Board extends React.Component {
   render() {
     // console.log('my board --- > ', this.props.myBoard)
     const {myBoard} = this.props;
+    const {cardBack} = this.props.localState;
     // console.log('my board --- > ', myBoard);
     return (
       <div className="myBoard">
         <TransitionGroup>
         {
           myBoard.boardCards.map((boardCard) =>
-            <Card key={boardCard.id} {...boardCard} />
+            <Card key={boardCard.id} card={boardCard} myBoard={myBoard} cardBack={cardBack} isBoard={true}/>
           )
         }
         </TransitionGroup>

@@ -12,7 +12,7 @@ class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cardBack: './images/cardBack/cardback.jpg',
+      cardBack: './images/cardBack/cardBack-02.jpg',
       deck: props.deck
     }
     // console.log('default state', this.state)

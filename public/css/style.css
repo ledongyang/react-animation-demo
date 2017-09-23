@@ -6,43 +6,62 @@ html, body, #main {
   height: 100%;
   background-color: white;
 }
+
+.myBoard {
+  position: absolute;
+  height: 170px;
+  top: 400px;
+  left: 100px;
+  right: 100px;
+  background: green;
+  z-index: 0;
+}
+
 .deck {
+  position: absolute;
+  display: inline-block;
+  flex: 0 0 auto;
+  background:silver url('../images/cardBack/cardBack-02.jpg') no-repeat center;
+  background-size: cover;
+  /* background-position:-6px -8px; */
+  border-radius: 5%;
+  border: 1px solid silver;
+  top: 10px;
+  left: 10px;
+  margin: auto;
+  transform-style: preserve-3d;
+  width: 100px;
+  height: 144px;
+  z-index: 1;
+}
+.card {
   position: absolute;
   top: 10px;
   left: 10px;
   margin: auto;
   width: 100px;
   height: 144px;
-  background: url('../images/cardBack/cardback.jpg');
-  background-size: cover;
-  border-radius: 10%;
-  border: 1px solid black;
-}
-.card {
-  position: absolute;
-  /* top: 10px;
-  left: 10px; */
-  margin: auto;
-  width: 100px;
-  height: 144px;
+  z-index: 1;
 }
 
 .cardFront, .cardBack
 {
   position:absolute;
+  display: inline-block;
+  flex: 0 0 auto;
+  background:silver no-repeat center;
+  /* background-position:-6px -8px; */
+  border-radius: 5%;
+  border: 1px solid silver;
   width:100px;
   height:144px;
-  border-radius: 10%;
-  border: 1px solid black;
+  margin: auto;
+  transform-style: preserve-3d;
+  z-index: 1;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   -ms-backface-visibility: hidden;
-}
-.cardBack
-{
-  border: 1px solid black;
-  background:url('./images/cardback.jpg');
 }
 
 .deal-btn {
@@ -53,6 +72,7 @@ html, body, #main {
   width: 80px;
   padding: 10px;
   font-size: 18px;
+  z-index: 2;
 }
 
 .draw-btn {
@@ -63,4 +83,5 @@ html, body, #main {
   width: 80px;
   padding: 10px;
   font-size: 18px;
+  z-index: 2;
 }
