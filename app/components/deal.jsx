@@ -9,52 +9,31 @@ const deal = (Component) => {
   return class Deal extends React.Component {
 
     componentWillEnter(cb) {
-      // console.log('enter')
-      // console.log(this.props)
       const {isPlayer, stage} = this.props;
-      // console.log('props--->', this.props)
-      // const {isDealing} = this.props.localState;
       let cards = findDOMNode(this).getElementsByClassName('card');
       cards = [].slice.call(cards, 0)
-      // if (isPlayer) {
-      //   cards.forEach(card => {
-      //     Animation.draggable(card, this.props);
-      //   })
-      // }
-      // console.log('cards array--->', cards)
       const frontCards = cards.map(card =>
         card.getElementsByClassName('cardFront')[0]
       )
       const backCards = cards.map(card =>
         card.getElementsByClassName('cardBack')[0]
       )
-      if (stage === 'deal') {
+      if (stage.gamePhase === 'deal') {
         Animation.dealHand(cards, frontCards, backCards, {isPlayer}, cb)
       }
     }
 
     componentWillLeave(cb) {
-      // console.log('leave')
       const {isPlayer, stage} = this.props;
-      // const {isDealing} = this.props.localState;
-      // const {initial} = this.props.localState;
-      // console.log(this.props)
-      console.log('*****++++>', this.props.localState)
       const cards = findDOMNode(this).getElementsByClassName('card');
-      if (stage !== 'initial') {
-        // if (stage === 'deal') {
+      if (stage.gamePhase !== 'initial') {
         Animation.emptyHand(cards, {isPlayer}, cb);
-        // } else if (isBoard && stage === 'deal') {
-        //   // console.log('test--->')
-        //   Animation.emptyBoard(cards, {isBoard}, cb);
-        // }
       } else {
         cb();
       }
     }
 
     render() {
-      // console.log(this.props)
       return (
         <Component { ...this.props } />
       )
@@ -64,4 +43,4 @@ const deal = (Component) => {
 
 export const MyHand = deal(myHand);
 export const OpponentHand = deal(opponentHand);
-// export const BoardHand = deal(boardHand);
+

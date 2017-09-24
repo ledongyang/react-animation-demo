@@ -2,15 +2,12 @@ import React from 'react';
 import {Card} from './draw';
 import { TransitionGroup } from 'react-transition-group';
 import {connect} from 'react-redux';
-import { playCard, changeStage, showCardDetail } from '../store';
+import { playCard, changeGamePhase, showCardDetail } from '../store';
 import CardDetail from './CardDetail';
 
 const MyHand = (props) => {
-  // console.log('my hand props===>', props)
   const {myHand, stage, isPlayer, myBoard, cardDetail} = props;
   const {cardBack} = props.localState;
-  // console.log('stage---->', stage)
-  // console.log('card detail-->', cardDetail)
   return (
     <div className="myHand">
       {
@@ -36,12 +33,10 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     playACard: (card) => {
-      // console.log('play the card ---> ', card)
-      dispatch(changeStage('play'))
+      dispatch(changeGamePhase('play'))
       dispatch(playCard(card));
     },
     showDetailOfACard: (card) => {
-      // console.log('im going to show, hold on, ', card)
       dispatch(showCardDetail(card))
     }
   }

@@ -5,13 +5,18 @@ import evolvedCards from '../../public/data/evolvedCards';
 const INIT_DECK = 'INIT_DECK';
 const GET_DECK = 'GET_DECK';
 const GET_MY_BOARD = 'GET_MY_BOARD';
+const GET_OPPONENT_BOARD = 'GET_OPPONENT_BOARD';
 const GET_MY_HAND = 'GET_MY_HAND';
 const GET_OPPONENT_HAND = 'GET_OPPONENT_HAND';
 const DRAW_TO_MY_HAND = 'DRAW_TO_MY_HAND';
+const DRAW_TO_OPPONENT_HAND = 'DRAW_TO_OPPONENT_HAND';
 const PLAY_TO_MY_BOARD = 'PLAY_TO_MY_BOARD';
+const PLAY_TO_OPPONENT_BOARD = 'PLAY_TO_OPPONENT_BOARD';
 const PLAY_FROM_MY_HAND = 'PLAY_FROM_MY_HAND';
+const PLAY_FROM_OPPONENT_HAND = 'PLAY_FROM_OPPONENT_HAND';
 const GET_CARD_DETAIL = 'GET_CARD_DETAIL';
 const REMOVE_FROM_MY_BOARD = 'REMOVE_FROM_MY_BOARD';
+const REMOVE_FROM_OPPONENT_BOARD = 'REMOVE_FROM_OPPONENT_BOARD';
 // const GET_BOARD_HAND = 'GET_BOARD_HAND';
 // const GET_NEW_CARD = 'GET_NEW_CARD';
 
@@ -19,15 +24,19 @@ const REMOVE_FROM_MY_BOARD = 'REMOVE_FROM_MY_BOARD';
 const initial_state = {
   // drawingCard: {},
   myHand: {
-    id: null,
+    id: Math.random(),
     handCards: []
   },
   opponentHand: {
-    id: null,
+    id: Math.random(),
     handCards: []
   },
   myBoard: {
-    id: null,
+    id: Math.random(),
+    boardCards: []
+  },
+  opponentBoard: {
+    id: Math.random(),
     boardCards: []
   },
   cardDetail: {},
@@ -63,9 +72,23 @@ const drawToMyHand = drawingCard => (
   }
 )
 
+const drawToOpponentHand = drawingCard => (
+  {
+    type: DRAW_TO_OPPONENT_HAND,
+    drawingCard
+  }
+)
+
 const playToMyBoard = playingCard => (
   {
     type: PLAY_TO_MY_BOARD,
+    playingCard
+  }
+)
+
+const playToOpponentBoard = playingCard => (
+  {
+    type: PLAY_TO_OPPONENT_BOARD,
     playingCard
   }
 )
@@ -77,10 +100,24 @@ const playFromMyHand = playingCard => (
   }
 )
 
+const playFromOpponentHand = playingCard => (
+  {
+    type: PLAY_FROM_OPPONENT_HAND,
+    playingCard
+  }
+)
+
 const getMyBoard = (myBoard) => (
   {
     type: GET_MY_BOARD,
     myBoard
+  }
+)
+
+const getOpponentBoard = (opponentBoard) => (
+  {
+    type: GET_OPPONENT_BOARD,
+    opponentBoard
   }
 )
 
@@ -98,19 +135,12 @@ const removeFromMyBoard= (cards) => (
   }
 )
 
-// const getBoardHand = boardHand => (
-//   {
-//     type: GET_BOARD_HAND,
-//     boardHand
-//   }
-// )
-
-// const getNewCard = (drawingCard) => (
-//   {
-//     type: GET_NEW_CARD,
-//     drawingCard
-//   }
-// )
+const removeFromOpponentBoard = (cards) => (
+  {
+    type: REMOVE_FROM_OPPONENT_BOARD,
+    cards
+  }
+)
 
 // thunk creator
 export const initDeck = (newDeck) => {
@@ -120,11 +150,12 @@ export const initDeck = (newDeck) => {
 }
 
 export const shuffleHand = (newDeck) => {
-  const {myHand, opponentHand, myBoard, deck} = shuffle(newDeck);
+  const {myHand, opponentHand, myBoard, opponentBoard, deck} = shuffle(newDeck);
   return function thunk (dispatch) {
     dispatch(getMyHand(myHand));
     dispatch(getOpponentHand(opponentHand));
     dispatch(getMyBoard(myBoard));
+    dispatch(getOpponentBoard(opponentBoard));
     dispatch(getDeck(deck));
   }
 }
@@ -138,10 +169,15 @@ export const drawToHand = (deck) => {
   }
 }
 
-export const playCard = (playingCard) => {
+export const playCard = (playingCard, whosTurn) => {
   return function thunk (dispatch) {
-    dispatch(playFromMyHand(playingCard));
-    dispatch(playToMyBoard(playingCard));
+    if (whosTurn === 'opponentturn') {
+      dispatch(playFromOpponentHand(playingCard));
+      dispatch(playToOpponentBoard(playingCard));
+    } else {
+      dispatch(playFromMyHand(playingCard));
+      dispatch(playToMyBoard(playingCard));
+    }
   }
 }
 
@@ -151,12 +187,17 @@ export const showCardDetail = (card) => {
   }
 }
 
-export const evolve = (card1, card2) => {
+export const evolve = (card1, card2, whosTurn) => {
   return function thunk (dispatch) {
     const evolvedCard = evolveToOne(card1, card2);
     // console.log('evolved card--->', evolvedCard);
-    dispatch(removeFromMyBoard([card1, card2]));
-    dispatch(playToMyBoard(evolvedCard));
+    if (whosTurn === 'opponentturn') {
+      dispatch(removeFromOpponentBoard([card1, card2]));
+      dispatch(playToOpponentBoard(evolvedCard));
+    } else {
+      dispatch(removeFromMyBoard([card1, card2]));
+      dispatch(playToMyBoard(evolvedCard));
+    }
   }
 }
 
@@ -183,12 +224,25 @@ export default function (state = initial_state, action) {
         ...state,
         myBoard: action.myBoard
       }
+    case GET_OPPONENT_BOARD:
+      return {
+        ...state,
+        opponentBoard: action.opponentBoard
+      }
     case DRAW_TO_MY_HAND:
       return {
         ...state,
         myHand: {
           ...state.myHand,
           handCards: [...state.myHand.handCards, action.drawingCard]
+        }
+      }
+    case DRAW_TO_OPPONENT_HAND:
+      return {
+        ...state,
+        opponentHand: {
+          ...state.opponentHand,
+          handCards: [...state.opponentHand.handCards, action.drawingCard]
         }
       }
     case PLAY_TO_MY_BOARD:
@@ -199,12 +253,28 @@ export default function (state = initial_state, action) {
           boardCards: [...state.myBoard.boardCards, action.playingCard]
         }
       }
+    case PLAY_TO_OPPONENT_BOARD:
+      return {
+        ...state,
+        opponentBoard: {
+          ...state.opponentBoard,
+          boardCards: [...state.opponentBoard.boardCards, action.playingCard]
+        }
+      }
     case PLAY_FROM_MY_HAND:
       return {
         ...state,
         myHand: {
           ...state.myHand,
           handCards: state.myHand.handCards.filter(handCard => +handCard.id !== +action.playingCard.id)
+        }
+      }
+    case PLAY_FROM_OPPONENT_HAND:
+      return {
+        ...state,
+        opponentHand: {
+          ...state.opponentHand,
+          handCards: state.opponentHand.handCards.filter(handCard => +handCard.id !== +action.playingCard.id)
         }
       }
     case GET_CARD_DETAIL:
@@ -218,6 +288,14 @@ export default function (state = initial_state, action) {
         myBoard: {
           ...state.myBoard,
           boardCards: state.myBoard.boardCards.filter(boardCard => +boardCard.id !== +action.cards[0].id && +boardCard.id !== +action.cards[1].id)
+        }
+      }
+    case REMOVE_FROM_OPPONENT_BOARD:
+      return {
+        ...state,
+        opponentBoard: {
+          ...state.opponentBoard,
+          boardCards: state.opponentBoard.boardCards.filter(boardCard => +boardCard.id !== +action.cards[0].id && +boardCard.id !== +action.cards[1].id)
         }
       }
     default:
@@ -244,6 +322,9 @@ const shuffle = (newDeck) => {
   }, myBoard = {
     id: generateKey(),
     boardCards: []
+  }, opponentBoard = {
+    id: generateKey(),
+    boardCards: []
   }
   let random, deckSize = deck.length, handSize = 5;
   for (let i = 0; i < handSize; i++) {
@@ -266,6 +347,7 @@ const shuffle = (newDeck) => {
     myHand,
     myBoard,
     opponentHand,
+    opponentBoard,
     deck
   }
 }

@@ -1,6 +1,5 @@
 import { TweenMax, TweenLite, TimelineLite } from 'gsap';
 import Draggable from "gsap/Draggable";
-// import Card from '../Card';
 
 export default {
   dealHand: (cards, frontCards, backCards, option, cb) => {
@@ -9,7 +8,6 @@ export default {
     const duration = 1;
     const stagger = 0.5;
     const position = 0;
-    // console.log('option--->', option)
     let {isPlayer} = option;
     let ypos = isPlayer ? 570 : -50;
     let xpos = isPlayer ? 0 : 600;
@@ -51,8 +49,6 @@ export default {
     }, stagger, position, cb)
   },
   emptyBoard: (cards, option, cb) => {
-    // console.log('testeteteteetet===>')
-    // const {isBoard} = option;
     let xpos = 1000;
     const duration = 0.5;
     const stagger = 0.2;
@@ -81,7 +77,6 @@ export default {
       bounds:".table",
       throwProps:true,
       onPress:function() {
-        // TweenLite.to(this.target, 0.5, {scale: 1, y: 570})
         StartX = this.x;
         StartY = 570;
       },
@@ -98,10 +93,8 @@ export default {
     })
   },
   onHover: (handCard, showDetailOfACard, card) => {
-    // console.log('on onhover')
     handCard.onmouseenter = function() {
       TweenLite.to(handCard, 0.5, {css:{scale: 1.2, "z-index": 2}});
-      // console.log('mouse enter')
       showDetailOfACard(card);
     }
     handCard.onmouseleave = function() {
@@ -110,8 +103,6 @@ export default {
     }
   },
   leavingMyHand: (card, index, cb) => {
-    // console.log('invoked')
-    // console.log('index-->', index)
     const duration = 0.5;
     const position = 0;
     const ypos = 400;
@@ -119,8 +110,19 @@ export default {
     const tl = new TimelineLite({onComplete:cb});
     tl.to(card, duration, {x: xpos, y:ypos}, position)
   },
+  leavingOpponentHand: (card, frontCard, backCard, index, cb) => {
+    TweenMax.set(frontCard, {rotationY: -180});
+    TweenMax.set(card, {perspective:600});
+    const duration = 0.5;
+    const position = 0;
+    const ypos = 200;
+    const xpos = 100 + (index + 1) * 110
+    const tl = new TimelineLite({onComplete:cb});
+    tl.to(card, duration, {x: xpos, y:ypos}, position)
+      .to(backCard, duration, {rotationY: -180}, position)
+      .to(frontCard, duration, {rotationY: 0}, position)
+  },
   playToMyBoard: (card, index, cb) => {
-    // console.log('hello')
     const duration = 0;
     const position = 0.5;
     const xpos = 100 + (index - 1) * 110
@@ -128,8 +130,22 @@ export default {
     tl.to(card, duration, {opacity: 0}, 0)
     .to(card, duration, {x: xpos, opacity: 1}, position)
   },
-  evolveEnter: (card, index, cb) => {
-    const tl = new TimelineLite({onComplete:cb});
+  playToOpponentBoard: (card, changeTurn, index, cb) => {
+    const duration = 0;
+    const position = 0.5;
+    const xpos = 100 + (index - 1) * 110
+    const tl = new TimelineLite({onComplete: () => {
+      changeTurn();
+      cb();
+    }});
+    tl.to(card, duration, {opacity: 0}, 0)
+    .to(card, duration, {x: xpos, opacity: 1}, position)
+  },
+  evolveEnter: (card, index, cb, changeTurn) => {
+    const tl = new TimelineLite({onComplete: () => {
+      if (changeTurn) {changeTurn();}
+      cb();
+    }});
     const xpos = 100 + (index - 1) * 110
     tl.to(card, 0, {opacity: 0, scale: 0, x: xpos})
       .to(card, 1, {opacity: 1, scale: 2, rotation: "+=720"}, 1)

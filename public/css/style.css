@@ -17,6 +17,16 @@ html, body, #main {
   z-index: 0;
 }
 
+.opponentBoard {
+  position: absolute;
+  height: 170px;
+  top: 200px;
+  left: 100px;
+  right: 400px;
+  background: red;
+  z-index: 0;
+}
+
 .deck {
   position: absolute;
   display: inline-block;
@@ -96,6 +106,17 @@ html, body, #main {
   right: 100px;
   margin: auto;
   width: 80px;
+  padding: 10px;
+  font-size: 18px;
+  z-index: 2;
+}
+
+.end-turn-btn {
+  position: absolute;
+  bottom: 50px;
+  right: 100px;
+  margin: auto;
+  width: 120px;
   padding: 10px;
   font-size: 18px;
   z-index: 2;
