@@ -43,6 +43,7 @@ const draw = (Component) => {
       // console.log('i leaving from hand')
       // console.log('props--->', this.props)
       const {myBoard} = this.props;
+      console.log('props--->', this.props)
       const handCard = findDOMNode(this);
       const index = myBoard.boardCards.length;
       Animation.leavingMyHand(handCard, index, cb)

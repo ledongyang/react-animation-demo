@@ -1,4 +1,5 @@
 import deck from '../../public/data/deck';
+import evolvedCards from '../../public/data/evolvedCards';
 
 // action types
 const INIT_DECK = 'INIT_DECK';
@@ -10,6 +11,7 @@ const DRAW_TO_MY_HAND = 'DRAW_TO_MY_HAND';
 const PLAY_TO_MY_BOARD = 'PLAY_TO_MY_BOARD';
 const PLAY_FROM_MY_HAND = 'PLAY_FROM_MY_HAND';
 const GET_CARD_DETAIL = 'GET_CARD_DETAIL';
+const REMOVE_FROM_MY_BOARD = 'REMOVE_FROM_MY_BOARD';
 // const GET_BOARD_HAND = 'GET_BOARD_HAND';
 // const GET_NEW_CARD = 'GET_NEW_CARD';
 
@@ -89,6 +91,13 @@ const getCardDetail = (card) => (
   }
 )
 
+const removeFromMyBoard= (cards) => (
+  {
+    type: REMOVE_FROM_MY_BOARD,
+    cards
+  }
+)
+
 // const getBoardHand = boardHand => (
 //   {
 //     type: GET_BOARD_HAND,
@@ -144,7 +153,10 @@ export const showCardDetail = (card) => {
 
 export const evolve = (card1, card2) => {
   return function thunk (dispatch) {
-
+    const evolvedCard = evolveToOne(card1, card2);
+    // console.log('evolved card--->', evolvedCard);
+    dispatch(removeFromMyBoard([card1, card2]));
+    dispatch(playToMyBoard(evolvedCard));
   }
 }
 
@@ -200,12 +212,26 @@ export default function (state = initial_state, action) {
         ...state,
         cardDetail: action.card
       }
+    case REMOVE_FROM_MY_BOARD:
+      return {
+        ...state,
+        myBoard: {
+          ...state.myBoard,
+          boardCards: state.myBoard.boardCards.filter(boardCard => +boardCard.id !== +action.cards[0].id && +boardCard.id !== +action.cards[1].id)
+        }
+      }
     default:
       return state;
   }
 }
 
 // helper functions
+const evolveToOne = (card1, card2) => {
+  const type = card1.type;
+  const level = card1.level + card2.level;
+  return evolvedCards[type].find(card => +card.level === level)
+}
+
 const shuffle = (newDeck) => {
   const deck = newDeck.slice();
   // console.log('deck--->', deck)

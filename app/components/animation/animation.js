@@ -127,5 +127,16 @@ export default {
     const tl = new TimelineLite({onComplete:cb});
     tl.to(card, duration, {opacity: 0}, 0)
     .to(card, duration, {x: xpos, opacity: 1}, position)
+  },
+  evolveEnter: (card, index, cb) => {
+    const tl = new TimelineLite({onComplete:cb});
+    const xpos = 100 + (index - 1) * 110
+    tl.to(card, 0, {opacity: 0, scale: 0, x: xpos})
+      .to(card, 1, {opacity: 1, scale: 2, rotation: "+=720"}, 1)
+      .to(card, 1, {opacity: 1, scale: 1}, 1.5)
+  },
+  evolveLeave: (card, cb) => {
+    const tl = new TimelineLite({onComplete:cb});
+    tl.to(card, 0.5, {scale: 0, rotation: "+=360", opacity: 0}, 0)
   }
 }

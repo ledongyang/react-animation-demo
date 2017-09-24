@@ -2,7 +2,8 @@ import React from 'react';
 import {Card} from './play';
 import { TransitionGroup } from 'react-transition-group';
 import {connect} from 'react-redux';
-import { showCardDetail, evolve } from '../store';
+import { showCardDetail, evolve, changeStage } from '../store';
+import { findDOMNode } from 'react-dom';
 import CardDetail from './CardDetail';
 
 class Board extends React.Component {
@@ -11,31 +12,15 @@ class Board extends React.Component {
   //   console.log('enter board')
   //   cb();
   // }
-  constructor(props) {
-    super(props);
-    this.checkEvolve = this.checkEvolve.bind(this);
-  }
-
-  checkEvolve(boardCards) {
-    const evolveCards = [];
-    for (let i = 0; i < boardCards.length; i++) {
-      for (let j = i + 1; j < boardCards.length; j++) {
-        if (boardCards[i].type === boardCards[j].type) {
-          evolveCards.push(boardCards[i]);
-          evolveCards.push(boardCards[j]);
-        }
-      }
-    }
-    if (evolveCards.length) {
-      this.props.evolveCards(evolveCards[0], evolveCards[1]);
-    }
-  }
+  // constructor(props) {
+  //   super(props);
+    // this.checkEvolve = this.checkEvolve.bind(this);
+  // }
 
   render() {
     // console.log('my board --- > ', this.props.myBoard)
-    const {myBoard, showDetailOfACard, cardDetail} = this.props;
+    const {myBoard, showDetailOfACard, evolveCards, cardDetail, stage} = this.props;
     const {cardBack} = this.props.localState;
-    this.checkEvolve(myBoard.boardCards);
     const totalBP = myBoard.boardCards.reduce(function(sum, card) {
       return sum + card.bp;
     }, 0)
@@ -51,7 +36,7 @@ class Board extends React.Component {
           <TransitionGroup>
           {
             myBoard.boardCards.map((boardCard) =>
-              <Card key={boardCard.id} card={boardCard} showDetailOfACard={showDetailOfACard} myBoard={myBoard} cardBack={cardBack} isBoard={true}/>
+              <Card key={boardCard.id} card={boardCard} showDetailOfACard={showDetailOfACard} evolveCards={evolveCards} myBoard={myBoard} stage={stage} cardBack={cardBack} isBoard={true}/>
             )
           }
           </TransitionGroup>
@@ -74,6 +59,7 @@ const mapDispatch = (dispatch) => {
       dispatch(showCardDetail(card))
     },
     evolveCards: (card1, card2) => {
+      dispatch(changeStage('evolve'))
       dispatch(evolve(card1, card2));
       // console.log('evolve-->', card1, card2)
     }
