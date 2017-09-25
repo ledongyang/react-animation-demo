@@ -4,19 +4,48 @@ html, body, #main {
 }
 .table {
   height: 100%;
-  background-color: white;
+  position: fixed;
+  background: wheat;
 }
+
+.myBoard {
+  position: absolute;
+  height: 170px;
+  top: 400px;
+  left: 100px;
+  right: 400px;
+  background: coral;
+  border-radius: 20%;
+  z-index: 0;
+}
+
+.opponentBoard {
+  position: absolute;
+  height: 170px;
+  top: 200px;
+  left: 100px;
+  right: 400px;
+  background: chocolate;
+  border-radius: 20%;
+  z-index: 0;
+}
+
 .deck {
   position: absolute;
+  display: inline-block;
+  flex: 0 0 auto;
+  background:silver url('../images/cardBack/cardBack-dragon.jpg') no-repeat center;
+  background-size: cover;
+  /* background-position:-6px -8px; */
+  border-radius: 5%;
+  border: 1px solid silver;
   top: 10px;
   left: 10px;
   margin: auto;
+  transform-style: preserve-3d;
   width: 100px;
   height: 144px;
-  background: url('../images/cardBack/cardback.jpg');
-  background-size: cover;
-  border-radius: 10%;
-  border: 1px solid black;
+  z-index: 1;
 }
 .card {
   position: absolute;
@@ -25,42 +54,159 @@ html, body, #main {
   margin: auto;
   width: 100px;
   height: 144px;
+  z-index: 1;
 }
 
 .cardFront, .cardBack
 {
   position:absolute;
-  width:100px;
-  height:144px;
-  border-radius: 10%;
-  border: 1px solid black;
+  display: inline-block;
+  flex: 0 0 auto;
+  background:silver no-repeat center;
+  border-radius: 5%;
+  border: 1px solid silver;
+  width:100%;
+  height:100%;
+  margin: auto;
+  transform-style: preserve-3d;
+  z-index: 1;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   -ms-backface-visibility: hidden;
 }
-.cardBack
-{
-  border: 1px solid black;
-  background:url('./images/cardback.jpg');
+
+.card-detail {
+  position:absolute;
+  display: inline-block;
+  flex: 0 0 auto;
+  background:silver no-repeat center;
+  border-radius: 5%;
+  border: 1px solid silver;
+  width: 300px;
+  height: 432px;
+  right: 10px;
+  top: 130px;
+  margin: auto;
+  transform-style: preserve-3d;
+  z-index: 1;
 }
 
 .deal-btn {
   position: absolute;
-  bottom: 100px;
+  bottom: 120px;
   right: 100px;
   margin: auto;
   width: 80px;
   padding: 10px;
   font-size: 18px;
+  z-index: 2;
 }
 
-.draw-btn {
+.end-turn-btn {
   position: absolute;
-  bottom: 50px;
+  bottom: 70px;
   right: 100px;
   margin: auto;
-  width: 80px;
+  width: 120px;
   padding: 10px;
   font-size: 18px;
+  z-index: 2;
+}
+
+.end-round-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 100px;
+  margin: auto;
+  width: 120px;
+  padding: 10px;
+  font-size: 18px;
+  z-index: 2;
+}
+
+.myscore {
+  position: absolute;
+  top: 450px;
+  width: 100px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.opponentscore {
+  position: absolute;
+  top: 250px;
+  width: 100px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.round {
+  position: absolute;
+  left: 100px;
+  width: 300px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.myBpBoard {
+  position: absolute;
+  top: 40px;
+  text-align: center;
+  width: 100px;
+  word-wrap: break-word;
+}
+
+.opponentBpBoard {
+  position: absolute;
+  text-align: center;
+  top: 40px;
+  width: 100px;
+  word-wrap: break-word;
+}
+
+.home {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-image: url('https://wallpaperscraft.com/image/dragon_fall_fire_flame_war_battle_61650_1920x1080.jpg');
+  background-size: cover;
+}
+
+.home-btn {
+  position: absolute;
+  top: 500px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 70px;
+  width: 170px;
+  padding: 10px;
+  font-size: 18px;
+  z-index: 2;
+}
+
+.game-title {
+  position: absolute;
+  text-align: center;
+  margin: auto;
+  top: 200px;
+  left: 0;
+  right: 0;
+  width: 400px;
+  word-wrap: break-word;
+  font-size: 100px;
+  color: white;
+}
+
+.game-desc {
+  position: absolute;
+  word-wrap: break-word;
+  color: white;
+  margin: auto;
+  width: 200px;
+  left: 0;
+  right: 0;
+  top: 450px;
+  text-align: center;
 }
