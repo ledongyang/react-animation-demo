@@ -4,7 +4,8 @@ html, body, #main {
 }
 .table {
   height: 100%;
-  background-color: white;
+  position: fixed;
+  background: wheat;
 }
 
 .myBoard {
@@ -13,7 +14,8 @@ html, body, #main {
   top: 400px;
   left: 100px;
   right: 400px;
-  background: green;
+  background: coral;
+  border-radius: 20%;
   z-index: 0;
 }
 
@@ -23,7 +25,8 @@ html, body, #main {
   top: 200px;
   left: 100px;
   right: 400px;
-  background: red;
+  background: chocolate;
+  border-radius: 20%;
   z-index: 0;
 }
 
@@ -91,18 +94,7 @@ html, body, #main {
 
 .deal-btn {
   position: absolute;
-  bottom: 100px;
-  right: 100px;
-  margin: auto;
-  width: 80px;
-  padding: 10px;
-  font-size: 18px;
-  z-index: 2;
-}
-
-.draw-btn {
-  position: absolute;
-  bottom: 50px;
+  bottom: 120px;
   right: 100px;
   margin: auto;
   width: 80px;
@@ -113,11 +105,62 @@ html, body, #main {
 
 .end-turn-btn {
   position: absolute;
-  bottom: 50px;
+  bottom: 70px;
   right: 100px;
   margin: auto;
   width: 120px;
   padding: 10px;
   font-size: 18px;
   z-index: 2;
+}
+
+.end-round-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 100px;
+  margin: auto;
+  width: 120px;
+  padding: 10px;
+  font-size: 18px;
+  z-index: 2;
+}
+
+.myscore {
+  position: absolute;
+  top: 450px;
+  width: 100px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.opponentscore {
+  position: absolute;
+  top: 250px;
+  width: 100px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.round {
+  position: absolute;
+  left: 100px;
+  width: 300px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.myBpBoard {
+  position: absolute;
+  top: 40px;
+  text-align: center;
+  width: 100px;
+  word-wrap: break-word;
+}
+
+.opponentBpBoard {
+  position: absolute;
+  text-align: center;
+  top: 40px;
+  width: 100px;
+  word-wrap: break-word;
 }

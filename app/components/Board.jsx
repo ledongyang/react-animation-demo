@@ -9,23 +9,32 @@ import CardDetail from './CardDetail';
 class Board extends React.Component {
 
   render() {
-    const {myBoard, showDetailOfACard, evolveCards, cardDetail, stage} = this.props;
+    const {myBoard, opponentBoard, showDetailOfACard, evolveCards, cardDetail, stage} = this.props;
+    // console.log(opponentBoard)
     const {cardBack} = this.props.localState;
     const totalBP = myBoard.boardCards.reduce(function(sum, card) {
-      return sum + card.bp;
+      if (card.type === 'fire' && opponentBoard.boardCards.find(card => card.type === 'water')) {
+        return sum + Math.round(card.bp / 2)
+      } else if (card.type === 'water' && opponentBoard.boardCards.find(card => card.type === 'earth')) {
+        return sum + Math.round(card.bp / 2)
+      } else if (card.type === 'earth' && opponentBoard.boardCards.find(card => card.type === 'fire')) {
+        return sum + Math.round(card.bp / 2)
+      } else {
+        return sum + card.bp;
+      }
     }, 0)
     return (
       <div>
         {
-          myBoard.boardCards.find(boardCard => +boardCard.id === cardDetail.id) && <CardDetail cardDetail={cardDetail} />
+          myBoard.boardCards.find(boardCard => +boardCard.id === +cardDetail.id) && <CardDetail cardDetail={cardDetail} />
         }
         <div className="myBoard">
 
-          <div className="myBpBoard">Battle Points: {totalBP}</div>
+          <div className="myBpBoard"><h1>BP: {totalBP}</h1></div>
           <TransitionGroup>
           {
-            myBoard.boardCards.map((boardCard) =>
-              <Card key={boardCard.id} card={boardCard} isPlayer={true} showDetailOfACard={showDetailOfACard} evolveCards={evolveCards} myBoard={myBoard} stage={stage} cardBack={cardBack} isBoard={true}/>
+            myBoard.boardCards.map((boardCard, index) =>
+              <Card key={boardCard.id} card={boardCard} isPlayer={true} showDetailOfACard={showDetailOfACard} evolveCards={evolveCards} myBoard={myBoard} stage={stage} cardBack={cardBack} index={index} isBoard={true}/>
             )
           }
           </TransitionGroup>
@@ -44,6 +53,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     showDetailOfACard: (card) => {
+      // console.log('card to show detail-->', card)
       dispatch(showCardDetail(card))
     },
     evolveCards: (card1, card2) => {

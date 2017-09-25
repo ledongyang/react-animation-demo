@@ -9,20 +9,28 @@ import { findDOMNode } from 'react-dom';
 class OpponentBoard extends React.Component {
 
   render() {
-    const {opponentBoard, evolveCards, stage, changeTurn} = this.props;
+    const {opponentBoard, myBoard, evolveCards, stage, changeTurn} = this.props;
     const {cardBack} = this.props.localState;
     const totalBP = opponentBoard.boardCards.reduce(function(sum, card) {
-      return sum + card.bp;
+      if (card.type === 'fire' && myBoard.boardCards.find(card => card.type === 'water')) {
+        return sum + Math.round(card.bp / 2)
+      } else if (card.type === 'water' && myBoard.boardCards.find(card => card.type === 'earth')) {
+        return sum + Math.round(card.bp / 2)
+      } else if (card.type === 'earth' && myBoard.boardCards.find(card => card.type === 'fire')) {
+        return sum + Math.round(card.bp / 2)
+      } else {
+        return sum + card.bp;
+      }
     }, 0)
     return (
       <div>
         <div className="opponentBoard">
 
-          <div className="opponentBpBoard">Battle Points: {totalBP}</div>
+          <div className="opponentBpBoard"><h1>BP: {totalBP}</h1></div>
           <TransitionGroup>
           {
-            opponentBoard.boardCards.map((boardCard) =>
-              <Card key={boardCard.id} card={boardCard} evolveCards={evolveCards} opponentBoard={opponentBoard} stage={stage} cardBack={cardBack} changeTurn={changeTurn} isBoard={true}/>
+            opponentBoard.boardCards.map((boardCard, index) =>
+              <Card key={boardCard.id} card={boardCard} evolveCards={evolveCards} opponentBoard={opponentBoard} stage={stage} cardBack={cardBack} changeTurn={changeTurn} index={index} isBoard={true}/>
             )
           }
           </TransitionGroup>

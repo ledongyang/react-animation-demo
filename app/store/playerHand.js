@@ -17,6 +17,8 @@ const PLAY_FROM_OPPONENT_HAND = 'PLAY_FROM_OPPONENT_HAND';
 const GET_CARD_DETAIL = 'GET_CARD_DETAIL';
 const REMOVE_FROM_MY_BOARD = 'REMOVE_FROM_MY_BOARD';
 const REMOVE_FROM_OPPONENT_BOARD = 'REMOVE_FROM_OPPONENT_BOARD';
+const CLEAR_MY_BOARD = 'CLEAR_MY_BOARD';
+const CLEAR_OPPONENT_BOARD = 'CLEAR_OPPONENT_BOARD';
 // const GET_BOARD_HAND = 'GET_BOARD_HAND';
 // const GET_NEW_CARD = 'GET_NEW_CARD';
 
@@ -142,6 +144,18 @@ const removeFromOpponentBoard = (cards) => (
   }
 )
 
+const clearMyBoard = () => (
+  {
+    type: CLEAR_MY_BOARD
+  }
+)
+
+const clearOpponentBoard = () => (
+  {
+    type: CLEAR_OPPONENT_BOARD
+  }
+)
+
 // thunk creator
 export const initDeck = (newDeck) => {
   return function thunk (dispatch) {
@@ -174,9 +188,11 @@ export const playCard = (playingCard, whosTurn) => {
     if (whosTurn === 'opponentturn') {
       dispatch(playFromOpponentHand(playingCard));
       dispatch(playToOpponentBoard(playingCard));
+
     } else {
       dispatch(playFromMyHand(playingCard));
       dispatch(playToMyBoard(playingCard));
+
     }
   }
 }
@@ -198,6 +214,13 @@ export const evolve = (card1, card2, whosTurn) => {
       dispatch(removeFromMyBoard([card1, card2]));
       dispatch(playToMyBoard(evolvedCard));
     }
+  }
+}
+
+export const clearBoard = () => {
+  return (dispatch) => {
+    dispatch(clearMyBoard());
+    dispatch(clearOpponentBoard());
   }
 }
 
@@ -296,6 +319,22 @@ export default function (state = initial_state, action) {
         opponentBoard: {
           ...state.opponentBoard,
           boardCards: state.opponentBoard.boardCards.filter(boardCard => +boardCard.id !== +action.cards[0].id && +boardCard.id !== +action.cards[1].id)
+        }
+      }
+    case CLEAR_MY_BOARD:
+      return {
+        ...state,
+        myBoard: {
+          ...state.myBoard,
+          boardCards: []
+        }
+      }
+    case CLEAR_OPPONENT_BOARD:
+      return {
+        ...state,
+        opponentBoard: {
+          ...state.opponentBoard,
+          boardCards: []
         }
       }
     default:

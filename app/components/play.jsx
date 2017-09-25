@@ -6,9 +6,11 @@ import card from './Card';
 const play = (Component) => {
   return class Play extends React.Component {
     componentWillEnter(cb) {
-      const {stage, myBoard, opponentBoard, card, isPlayer, changeTurn, showDetailOfACard, evolveCards} = this.props;
+      const {stage, index, myBoard, opponentBoard, card,
+        isPlayer, changeTurn, showDetailOfACard, evolveCards} = this.props;
       // console.log('enter my board')
       // console.log('whos turn ---> ', stage.whosTurn)
+      // console.log('stage-->', stage.round, stage.gamePhase)
       let evolvedCardsArr;
       if (isPlayer) {
         evolvedCardsArr = checkEvolve(myBoard.boardCards);
@@ -19,24 +21,24 @@ const play = (Component) => {
         evolveCards(evolvedCardsArr[0], evolvedCardsArr[1]);
       }
       const handCard = findDOMNode(this);
-      let index = isPlayer ? myBoard.boardCards.length
-          : opponentBoard.boardCards.length;
+      // let index = isPlayer ? myBoard.boardCards.length
+      //     : opponentBoard.boardCards.length;
       if (isPlayer) {
         Animation.onHover(handCard, showDetailOfACard, card)
         if (stage.gamePhase === 'play') {
-          Animation.playToMyBoard(handCard, index, cb);
+          Animation.playToMyBoard(handCard, index + 1, cb);
         }
         if (stage.gamePhase === 'evolve') {
-          Animation.evolveEnter(handCard, index, cb);
+          Animation.evolveEnter(handCard, index + 1, cb);
         }
       } else {
         console.log('opponent play to board')
         if (stage.gamePhase === 'play') {
           // console.log(changeTurn);
-          Animation.playToOpponentBoard(handCard, changeTurn, index, cb);
+          Animation.playToOpponentBoard(handCard, changeTurn, index + 1, cb);
         }
         if (stage.gamePhase === 'evolve') {
-          Animation.evolveEnter(handCard, index, cb, changeTurn);
+          Animation.evolveEnter(handCard, index + 1, cb, changeTurn);
         }
       }
     }
