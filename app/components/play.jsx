@@ -8,9 +8,6 @@ const play = (Component) => {
     componentWillEnter(cb) {
       const {stage, index, myBoard, opponentBoard, card,
         isPlayer, changeTurn, showDetailOfACard, evolveCards} = this.props;
-      // console.log('enter my board')
-      // console.log('whos turn ---> ', stage.whosTurn)
-      // console.log('stage-->', stage.round, stage.gamePhase)
       let evolvedCardsArr;
       if (isPlayer) {
         evolvedCardsArr = checkEvolve(myBoard.boardCards);
@@ -21,8 +18,6 @@ const play = (Component) => {
         evolveCards(evolvedCardsArr[0], evolvedCardsArr[1]);
       }
       const handCard = findDOMNode(this);
-      // let index = isPlayer ? myBoard.boardCards.length
-      //     : opponentBoard.boardCards.length;
       if (isPlayer) {
         Animation.onHover(handCard, showDetailOfACard, card)
         if (stage.gamePhase === 'play') {
@@ -35,7 +30,6 @@ const play = (Component) => {
         console.log('opponent play to board')
         Animation.onHover(handCard, showDetailOfACard, card)
         if (stage.gamePhase === 'play') {
-          // console.log(changeTurn);
           Animation.playToOpponentBoard(handCard, changeTurn, index + 1, cb);
         }
         if (stage.gamePhase === 'evolve') {

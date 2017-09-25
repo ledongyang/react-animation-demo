@@ -37,10 +37,8 @@ class Table extends Component {
   }
 
   endTurn(card) {
-    // get a random card from computer hand
     if (this.props.stage.whosTurn === 'myturn'){
       const opponentHandCards = this.props.opponentHand.handCards
-      // console.log('opponent hand cards', opponentHandCards)
       const randomNum = Math.floor(Math.random() * opponentHandCards.length);
       this.props.endTurn(opponentHandCards[randomNum]);
     }
@@ -72,14 +70,6 @@ class Table extends Component {
           return sum + card.bp;
         }
       }, 0)
-      // console.log('opponent bp', opponentBP);
-      // if (opponentBP <= myBP) {
-      //   const opponentHandCards = opponentHand.handCards;
-      //   const randomNum = Math.floor(Math.random() * opponentHandCards.length);
-      //   this.props.endTurn(opponentHandCards[randomNum]);
-      // } else {
-      //   console.log('hello')
-      // }
       if (myBP >= opponentBP) {
         UpdateMyScore(myScore+1);
         if (myScore === 1) {
@@ -150,8 +140,7 @@ const mapState = (state) => {
     opponentBoard: state.playerHand.opponentBoard,
     myHand: state.playerHand.myHand,
     opponentHand: state.playerHand.opponentHand,
-    cardDetail: state.playerHand.cardDetail,
-    // drawingCard: state.playerHand.drawingCard //add this new card to my hand
+    cardDetail: state.playerHand.cardDetail
   }
 }
 
@@ -177,7 +166,6 @@ const mapDispatch = (dispatch, ownProps) => {
       dispatch(changeTurn('opponentturn'));
       dispatch(changeGamePhase('play'));
       dispatch(playCard(card, 'opponentturn'));
-      // console.log('play this card-->', card)
     },
     updateRound: (round) => {
       dispatch(changeGamePhase('endround'));

@@ -20,12 +20,6 @@ const OpponentHand = (props) => {
   )
 }
 
-const mapState = (state) => {
-  return {
-
-  }
-}
-
 const mapDispatch = (dispatch) => {
   return {
     playACard: (card) => {
@@ -35,5 +29,5 @@ const mapDispatch = (dispatch) => {
   }
 }
 
-export default connect(mapState, mapDispatch)(OpponentHand);
+export default connect(null, mapDispatch)(OpponentHand);
 

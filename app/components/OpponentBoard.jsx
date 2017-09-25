@@ -4,7 +4,6 @@ import { TransitionGroup } from 'react-transition-group';
 import {connect} from 'react-redux';
 import { evolve, changeGamePhase, changeTurn } from '../store';
 import { findDOMNode } from 'react-dom';
-// import CardDetail from './CardDetail';
 
 class OpponentBoard extends React.Component {
 

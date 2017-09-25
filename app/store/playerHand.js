@@ -368,20 +368,12 @@ const shuffle = (newDeck) => {
   let random, deckSize = deck.length, handSize = 6;
   for (let i = 0; i < handSize; i++) {
     random = randomCardIndex(deckSize--);
-    // console.log('random 1--->', random)
     myHand.handCards.push(deck[random]);
     deck.splice(random, 1);
     random = randomCardIndex(deckSize--);
-    // console.log('random 2--->', random)
     opponentHand.handCards.push(deck[random]);
     deck.splice(random, 1);
-    // deckSize--;
   }
-  // for (let j = 0; j < boardHandSize; j++) {
-  //   random = randomCardIndex(deckSize--);
-  //   boardHand.push(deck[random]);
-  //   deck.splice(random, 1);
-  // }
   return {
     myHand,
     myBoard,

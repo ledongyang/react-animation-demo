@@ -10,7 +10,6 @@ class Board extends React.Component {
 
   render() {
     const {myBoard, opponentBoard, showDetailOfACard, evolveCards, cardDetail, stage} = this.props;
-    // console.log(opponentBoard)
     const {cardBack} = this.props.localState;
     const totalBP = myBoard.boardCards.reduce(function(sum, card) {
       if (card.type === 'fire' && opponentBoard.boardCards.find(card => card.type === 'water')) {
@@ -53,7 +52,6 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     showDetailOfACard: (card) => {
-      // console.log('card to show detail-->', card)
       dispatch(showCardDetail(card))
     },
     evolveCards: (card1, card2) => {
