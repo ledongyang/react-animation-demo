@@ -33,6 +33,7 @@ const play = (Component) => {
         }
       } else {
         console.log('opponent play to board')
+        Animation.onHover(handCard, showDetailOfACard, card)
         if (stage.gamePhase === 'play') {
           // console.log(changeTurn);
           Animation.playToOpponentBoard(handCard, changeTurn, index + 1, cb);

@@ -164,3 +164,49 @@ html, body, #main {
   width: 100px;
   word-wrap: break-word;
 }
+
+.home {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-image: url('https://wallpaperscraft.com/image/dragon_fall_fire_flame_war_battle_61650_1920x1080.jpg');
+  background-size: cover;
+}
+
+.home-btn {
+  position: absolute;
+  top: 500px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 70px;
+  width: 170px;
+  padding: 10px;
+  font-size: 18px;
+  z-index: 2;
+}
+
+.game-title {
+  position: absolute;
+  text-align: center;
+  margin: auto;
+  top: 200px;
+  left: 0;
+  right: 0;
+  width: 400px;
+  word-wrap: break-word;
+  font-size: 100px;
+  color: white;
+}
+
+.game-desc {
+  position: absolute;
+  word-wrap: break-word;
+  color: white;
+  margin: auto;
+  width: 200px;
+  left: 0;
+  right: 0;
+  top: 450px;
+  text-align: center;
+}

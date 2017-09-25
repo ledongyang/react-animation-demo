@@ -365,7 +365,7 @@ const shuffle = (newDeck) => {
     id: generateKey(),
     boardCards: []
   }
-  let random, deckSize = deck.length, handSize = 5;
+  let random, deckSize = deck.length, handSize = 6;
   for (let i = 0; i < handSize; i++) {
     random = randomCardIndex(deckSize--);
     // console.log('random 1--->', random)

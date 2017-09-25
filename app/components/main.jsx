@@ -13,6 +13,7 @@ class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isHome: true,
       isStarted: false,
       cardBack: './images/cardBack/cardBack-dragon.jpg',
       deck: props.deck
@@ -99,11 +100,28 @@ class Table extends Component {
     }
   }
 
+  startGame () {
+    this.setState({
+      isHome: false
+    })
+  }
+
   render() {
     const {myScore, opponentScore, round} = this.props.stage;
     const {isStarted} = this.state;
     return (
-      <div className="table">
+      <div>
+      {
+        this.state.isHome && <div className="home">
+          <h1 className="game-title">Dragon Era</h1>
+          <p className="game-desc">Powered by React and Redux
+            Animated by GreenSock
+          </p>
+          <button className="home-btn btn-primary" onClick={this.startGame.bind(this)}>Start the Game!</button>
+        </div>
+      }
+      {
+        !this.state.isHome && <div className="table">
         <Deck />
         { isStarted && <div className="round">
               <h1>Round #{round}</h1>
@@ -120,6 +138,8 @@ class Table extends Component {
         <button onClick={this.endTurn.bind(this)} className="end-turn-btn btn-warning">End Turn</button>
         <button onClick={this.endRound.bind(this)} className="end-round-btn btn-danger">End Round</button>
       </div>
+      }
+    </div>
     )
   }
 }
@@ -144,7 +164,10 @@ const mapDispatch = (dispatch, ownProps) => {
     },
     deal: () => {
       dispatch(changeTurn('myturn'));
-      dispatch(changeGamePhase('deal'))
+      dispatch(changeGamePhase('deal'));
+      dispatch(updateRound(0));
+      dispatch(UpdateMyScore(0));
+      dispatch(UpdateOpponentScore(0));
       dispatch(shuffleHand(deckData));
     },
     draw: (deck) => {
