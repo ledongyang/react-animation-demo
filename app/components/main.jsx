@@ -113,10 +113,8 @@ class Table extends Component {
       <div>
       {
         this.state.isHome && <div className="home">
-          <h1 className="game-title">Dragon Era</h1>
-          <p className="game-desc">Powered by React and Redux
-            Animated by GreenSock
-          </p>
+          <h1 className="game-title">DragonStone</h1>
+
           <button className="home-btn btn-primary" onClick={this.startGame.bind(this)}>Start the Game!</button>
         </div>
       }
